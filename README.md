@@ -31,12 +31,6 @@ enabling the claims to be digitally signed or integrity protected with a Message
 [verify_user.py](https://github.com/Bradkibs/EMS254/blob/main/auth/verify_user.py)
 
 
-`User Verification`
-
-`def generate_verification_token():`
-
-`def send_verification_email(user_email, verification_token):`
-
 
 ### db
 
