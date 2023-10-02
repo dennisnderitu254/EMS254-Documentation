@@ -1,138 +1,14 @@
-# EMS 254 Docs
+# EMS254 Documentation
 
 EMS254 is a mode of payment system that enables Third Party Payments using the Escrow Model and Technology.
 
 This is an explanation on the backend structure of the Escrow System, EMS254.
 
-File Structure
+### File Structure
 
 `api/v1/views` - This is an api directory that has the routes/endpoints that are handling Registration, Login, User Profile, Logout
 
 - `user_views.py`
-
-```
-from flask import jsonify, request
-from auth.auth import Authentication
-from auth.user_auth import UserAuth
-from datetime import datetime
-from api.v1.views import app_views
-#from auth.verify_user import generate_verification_token, send_verification_email
-from flask_jwt_extended import jwt_required
-from utils.user_account import AccountService
-
-user_auth = UserAuth()
-user_authenticator = Authentication()
-account_service = AccountService()
-
-@app_views.route('/register', methods=['POST'])
-def register_user():
-    """
-    Register a new user
-    """
-    data = request.get_json()
-    email = data.get('email')
-    password = data.get('password')
-    first_name = data.get('first_name')
-    last_name = data.get('last_name')
-    phone_number = data.get('phone_number')
-    location = data.get('location')
-
-    if not email:
-        return jsonify({"message": "email is required"}), 400
-    if not password:
-        return jsonify({"message": "password is required"}), 400
-    if not first_name:
-        return jsonify({"message": "first_name is required"}), 400
-    if not last_name:
-        return jsonify({"message": "last_name is required"}), 400
-    if not phone_number:
-        return jsonify({"message": "phone_number is required"}), 400
-    if not location:
-        return jsonify({"message": "location is required"}), 400
-    is_active = False
-    last_login = datetime.utcnow()
-    last_login_str = last_login.strftime("%Y-%m-%d %H:%M:%S")
-    user = user_auth.get_user_by_email(email)
-    if user:
-        return jsonify({"message": "user already exists"}), 409
-    else:
-        usr = user_auth.create_user(email=email, password=password, first_name=first_name, last_name=last_name, phone_number=phone_number, location=location, is_active=is_active, last_login=last_login_str)
-        account = account_service.create_account(Total_funds=0, incomming_funds=0, outgoing_funds=0, user_id=usr.id)
-        #verification_token = generate_verification_token()
-        #mail_response = send_verification_email(user_email=email, verification_token=verification_token)
-        account_deets = { 'account_number': account.account_number, 'Total_funds': account.Total_funds, 'incomming_funds': account.incomming_funds, 'outgoing_funds': account.outgoing_funds, 'user_id': account.user_id }
-        return jsonify({"message": "user created successfully", "user_id": str(usr.id), "account_message": "account created with the following credentials", 'account_details': account_deets}), 201
-
-
-#@app_views.route('/verify_email/<string: token>', methods=['GET'])
-#def verify_email(token):
-
-@app_views.route('/login', methods=['POST'])
-def login_user():
-    """
-    Login a user
-    """
-    data = request.get_json()
-    email = data.get('email')
-    phone_number = data.get('phone_number')
-    password = data.get('password')
-
-    if not email and not phone_number:
-        return jsonify({"message": "email or phone number is required"}), 400
-    if not password:
-        return jsonify({"message": "password is required"}), 400
-    if email:
-        user = user_auth.get_user_by_email(email)
-        if not user:
-            return jsonify({"message": "user not found"}), 404
-        if not user_auth.verify_password(password, user.password):
-            return jsonify({"message": "invalid password"}), 400
-        else:
-            access_token = user_authenticator.create_token(user.id)
-            response = jsonify({"message": "Logged in successfully!", 'status': 200})
-            user_authenticator.set_cookie(response, access_token)
-            return response
-    if phone_number:
-        user = user_auth.get_user_by_email(phone_number)
-        if not user:
-            return jsonify({"message": "user not found"}), 404
-        if not user_auth.verify_password(password, user.password):
-            return jsonify({"message": "invalid password"}), 400
-        else:
-            access_token = user_authenticator.create_token(user.id)
-            response = jsonify({"message": "Logged in successfully!", "status": 200})
-            user_authenticator.set_cookie(response, access_token)
-            return response
-
-
-@app_views.route('/profile', methods=['GET'])
-@jwt_required()
-def get_user():
-    """
-    Get a user
-    """
-    user_id = user_authenticator.get_authenticated_user()
-    user = user_auth.get_user_by_id(user_id)
-    if not user:
-        return jsonify({"message": "user not found"}), 404
-    user_data = {
-        "email": user.email,
-        "first_name": user.first_name,
-        "last_name": user.last_name,
-        "phone_number": user.phone_number,
-        "location": user.location,
-        "role": user.role,
-        "is_active": user.is_active,
-        "last_login": user.last_login
-
-    }
-    return jsonify(user_data), 200
-
-
-@app_views.route('/logout', methods=['GET'])
-def logout():
-    pass
-```
 
 `@app_views.route('/register', methods=['POST'])` - Flask route handling User Registration
 
@@ -147,52 +23,17 @@ def logout():
 
 * `auth.py` - this file enables the use of JWT Authentication,  Containing a class that allowed token creation and cookies to be set
 
-```
-from flask_jwt_extended import create_access_token, get_jwt_identity, unset_jwt_cookies, \
-    set_access_cookies, verify_jwt_in_request
+`def create_token(self, identity):` -
 
+`def refresh_token(self, identity):` -
 
-class Authentication:
+`def validate_jwt(self):` -
 
-    __token = None
+`def get_authenticated_user(self):` -
 
-    def create_token(self, identity):
-        self.__token = create_access_token(identity=identity)
-        return self.__token
+`def set_cookie(self, response, access_token):` -
 
-    def refresh_token(self, identity):
-        self.create_token(identity)
-
-    def validate_jwt(self):
-        try:
-            verify_jwt_in_request()
-        except Exception as e:
-            return False
-        return True
-    def get_authenticated_user(self):
-        if self.validate_jwt():
-            return get_jwt_identity()
-        return None
-
-    def set_cookie(self, response, access_token):
-        set_access_cookies(response, access_token)
-
-    def unset_cookie(self, response, access_token):
-        unset_jwt_cookies(response, access_token)
-```
-
-`def create_token(self, identity):`
-
-`def refresh_token(self, identity):`
-
-`def validate_jwt(self):`
-
-`def get_authenticated_user(self):`
-
-`def set_cookie(self, response, access_token):`
-
-`def unset_cookie(self, response, access_token):`
-
+`def unset_cookie(self, response, access_token):` -
 
 
 `Authentication` is Done using JWT(JSON Web Token) - JWT stands for JSON Web Token. It is a compact,
@@ -201,137 +42,36 @@ The claims in a JWT are encoded as a JSON object that is used as the payload of 
 JSON Web Signature (JWS) structure or as the plaintext of a JSON Web Encryption (JWE) structure,
 enabling the claims to be digitally signed or integrity protected with a Message Authentication Code (MAC) and/or encrypted.
 
-
-
 * `user_auth.py`
 
-```
-from models.users import User
-#from models.accounts import Accounts
-from models.messages import Messages
-from models.transactions import Transactions
-from uuid import uuid4
-from db.storage import DB
-from bcrypt import hashpw, gensalt, checkpw
+`def hash_password(self, password):` -
 
-class UserAuth:
-    _db = DB()
-    _db.reload()
+`def verify_password(self, candidate_password, hashed_password):` -
 
-    def hash_password(self, password):
-        password_bytes = password.encode('utf-8')
-        salt = gensalt()
-        hashed_password = hashpw(password_bytes, salt)
-        return hashed_password.decode('utf-8')
+`def create_user(self, **kwargs):` -
 
-    def verify_password(self, candidate_password, hashed_password):
-        candidate_password_bytes = candidate_password.encode('utf-8')
-        hashed_password_bytes = hashed_password.encode('utf-8')
-        return checkpw(candidate_password_bytes, hashed_password_bytes)
+`def get_user_by_email(self, email):` -
 
-    def create_user(self, **kwargs):
-        email = kwargs.get('email')
-        password = kwargs.get('password')
-        first_name = kwargs.get('first_name')
-        last_name = kwargs.get('last_name')
-        phone_number = kwargs.get('phone_number')
-        location = kwargs.get('location')
-        role = kwargs.get('is_superuser')
-        is_active = kwargs.get('is_active')
-        login_time = kwargs.get('last_login')
-        password = self.hash_password(password)
-        user = User(email=email, password=password, first_name=first_name, last_name=last_name, phone_number=phone_number, location=location, role=role, is_active=is_active, last_login=login_time)
-        self._db.add(user)
-        self._db.save()
-        return user
+`def get_user_by_phone_number(self, phone_number):` -
 
-    def get_user_by_email(self, email):
-        try:
-            return self._db.query(User).filter_by(email=email).first()
-        except Exception as e:
-            return None
-    def get_user_by_phone_number(self, phone_number):
-        try:
-            return self._db.query(User).filter_by(phone_number=phone_number).first()
-        except Exception as e:
-            return None
-    def get_user_by_id(self, id):
-        try:
-            return self._db.query(User).filter_by(id=id).first()
-        except Exception as e:
-            return None
+`def get_user_by_id(self, id):` -
 
-    def get_all_users(self):
-        return self._db.query(User).all()
+`def get_all_users(self):` -
 
-    def delete_user(self, id):
-        user = self.get_user_by_id(id)
-        self._db.delete(user)
-        self._db.save()
-        return True
+`def delete_user(self, id):` -
 
-    def update_user(self, id, email, password):
-        try:
-            user = self.get_user_by_id(id)
-            if user:
-                if email:
-                    user.email = email
-                if password:
-                    user.password = self.hash_password(password)
-                self._db.save()
-                return user
-            return None
-        except Exception as e:
-            return None
-```
-
-`def hash_password(self, password):`
-
-`def verify_password(self, candidate_password, hashed_password):`
-
-`def create_user(self, **kwargs):`
-
-`def get_user_by_email(self, email):`
-
-`def get_user_by_phone_number(self, phone_number):`
-
-`def get_user_by_id(self, id):`
-
-`def get_all_users(self):`
-
-`def delete_user(self, id):`
-
-`def update_user(self, id, email, password):`
-
+`def update_user(self, id, email, password):` -
 
 
 * `verify_user.py`
 
-```
-import secrets
-from flask import url_for, jsonify
-from flask_mail import Mail, Message
-from os import getenv
 
-def generate_verification_token():
-    return secrets.token_urlsafe(16)
+`User Verification`
 
+`def generate_verification_token():`
 
-def send_verification_email(user_email, verification_token):
-    subject = 'Verification Email for EMS254'
-    mail = getenv('VERIFICATION_EMAIL')
-    msg = Message(subject, sender=mail, recipients=[user_email])
-    mail = Mail()
-    verification_url = url_for('app_views.register', token=verification_token, _external=True)
+`def send_verification_email(user_email, verification_token):`
 
-    # Updated email body with a clear message.
-    msg.body = f"Hello,\n\nPlease click the following link to verify your email address for EMS254:\n{verification_url}\n\nIf you didn't register for EMS254, you can safely ignore this email.\n\nBest regards,\nThe EMS254 Team"
-    try:
-        mail.send(msg)
-        return jsonify({"Message": "Mail sent successfully", "status": 200})
-    except Exception as e:
-        return jsonify({"Mail sending Error": str(e), "status": 502})
-```
 
 `db`
 
@@ -346,101 +86,23 @@ storage.reload()
 
 * `storage.py`
 
-```
-from sqlalchemy.orm import sessionmaker
-from models.basemodel import Base
-from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy.exc import SQLAlchemyError
-from os import getenv
-from dotenv import load_dotenv
+`storage.py` - Python file that has CRUD (Create, Read, Update, Delete) Functionality for Database Operations
 
+`def reload(self):` - Reload
 
-load_dotenv()
+`def add(self, obj):` - Add
 
+`def save(self):` - Save
 
-class DB:
-    """
-    DB class
-    """
+`def delete(self, obj=None):` - Delete
 
-    __engine = None
-    __session = None
+`def query(self, cls):` - Query
 
-    def __init__(self):
-        """
-        Constructor
-        """
+`def close(self):` - calls remove() method on the private session attr to close the session and stop using it
 
-        user = getenv('PG_USER')
-        password = getenv('PG_PWD')
-        host = getenv('PG_HOST')
-        db_name = getenv('PG_DB')
-        env = getenv('APP_ENV')
-        pg_url = getenv('PG_URL')
-        try:
-            self.__engine = create_engine(f'postgresql://{user}:{password}@{host}/{db_name}')
-            # self.__engine = create_engine(pg_url)
-            #self.reload()
+`def begin(self):` - calls begin() method on the private session attr to start a transaction
 
-            if env == 'test':
-                Base.metadata.drop_all(self.__engine)
-        except SQLAlchemyError as e:
-            raise e
-
-
-    def reload(self):
-        """
-        Reload
-        """
-
-        Base.metadata.create_all(self.__engine)
-        session_maker = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        self.__session = scoped_session(session_maker)
-
-
-
-    def add(self, obj):
-        """
-        Add
-        """
-
-        self.__session.add(obj)
-
-    def save(self):
-        """
-        Save
-        """
-
-        self.__session.commit()
-
-    def delete(self, obj=None):
-        """
-        Delete
-        """
-
-        if obj:
-            self.__session.delete(obj)
-
-    def query(self, cls):
-        """
-        Query
-        """
-
-        return self.__session.query(cls)
-
-    def close(self):
-        """calls remove() method on the private session attr to close the session and stop using it"""
-        self.__session.remove()
-
-    def begin(self):
-        """calls begin() method on the private session attr to start a transaction"""
-        self.__session.begin()
-
-    def rollback(self):
-        """calls rollback() method on the private session attr to roll back a transaction"""
-        self.__session.rollback()
-```
+`def rollback(self):` - calls rollback() method on the private session attr to roll back a transaction
 
 
 `models`
@@ -527,100 +189,20 @@ class BaseModel:
         return my_dict
 ```
 
-* `messages.py`
+* `messages.py` - Message Model that enables messages sent from sender and receiver
 
-```
-from models.basemodel import BaseModel, Base
-from sqlalchemy import Column, String, ForeignKey, Text
-from sqlalchemy.orm import relationship
 
-class Messages(BaseModel, Base):
-    """ The messages model"""
-    __tablename__ = 'messages'
-
-    content = Column(Text, nullable=False)
-
-    # Define the foreign key relationship to the sender user
-    sender_id = Column(String(255), ForeignKey('users.id'), nullable=False)
-    receiver_id = Column(String(255), ForeignKey('users.id'), nullable=False)
-
-    # Define the sender and receiver relationships
-    sender = relationship('User', foreign_keys=[sender_id], backref='sent_message')
-    receiver = relationship('User', foreign_keys=[receiver_id], backref='received_message')
-```
-
-* `transactions.py`
-
-```
-from models.basemodel import BaseModel, Base
-from sqlalchemy import Column, String, ForeignKey, Float
-from sqlalchemy.orm import relationship
-
-class Transactions(BaseModel, Base):
-
-    """ The transactions model
+* `transactions.py` - The transactions model
     we keep the senders and receivers in the same table
     and create a foreign key relationship to the users table
     ceate a virtual column for the sender and receiver
     in the users table
-    """
-    __tablename__ = 'transactions'
 
-    # Define the foreign key relationship to the sender user
-    sender_id = Column(String(255), ForeignKey('users.id'), nullable=False)
+* `users.py` - Model that Contains User Details and Facilitates Account Creation and Validation.
 
-    # Define the foreign key relationship to the receiver user
-    receiver_id = Column(String(255), ForeignKey('users.id'), nullable=False)
+* `utils`
 
-    # Amount of the transaction
-    amount = Column(Float, nullable=False)
-
-    # Define the sender and receiver relationships
-    sender = relationship('User', foreign_keys=[sender_id], backref='sent_transaction')
-    receiver = relationship('User', foreign_keys=[receiver_id], backref='received_transaction')
-```
-
-
-
-* `users.py`
-
-```
-from models.basemodel import BaseModel, Base
-from sqlalchemy import Column, String, DateTime, Boolean, Enum as SQLAlchemyEnum
-from sqlalchemy.orm import relationship
-
-class User(BaseModel, Base):
-    __tablename__ = 'users'
-    email = Column(String(255), nullable=False, unique=True)
-    first_name = Column(String(255), nullable=False)
-    last_name = Column(String(255), nullable=False)
-    phone_number = Column(String(20), nullable=False)
-    location = Column(String(255), nullable=False, default='KENYA')
-    password = Column(String(255), nullable=False)
-    role = Column(SQLAlchemyEnum('admin', 'user', 'customer_service', name='user_role_enum'), default='user', nullable=False)
-    is_active = Column(Boolean, default=False)
-    last_login = Column(DateTime, nullable=False)
-
-    # Define the relationship to the accounts table
-    accounts = relationship("Accounts", uselist=False, back_populates="user")
-
-    # Define the relationship to the transactions table
-    sent_transactions = relationship('Transactions', foreign_keys='Transactions.sender_id', backref='sender_user', lazy=True)
-    received_transactions = relationship('Transactions', foreign_keys='Transactions.receiver_id', backref='receiver_user', lazy=True)
-
-    # Define the relationship to the messages table
-    sent_messages = relationship('Messages', foreign_keys='Messages.sender_id', backref='sender_user_messages', lazy=True)
-    received_messages = relationship('Messages', foreign_keys='Messages.receiver_id', backref='receiver_user_messages', lazy=True)
-
-    def __init__(self, *args, **kwargs):
-        """Initialize the user"""
-        super().__init__(*args, **kwargs)
-```
-
-
-`utils`
-
-* `messages.py`
+* `messages.py` -
 
 ```
 from models.messages import Messages
