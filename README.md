@@ -6,7 +6,7 @@ This is an explanation on the backend structure of the Escrow System, EMS254.
 
 ### File Structure
 
-`EMS254/tree/main/api/v1/views/user` - This is an api directory that has the routes/endpoints that are handling Registration, Login, User Profile, Logout
+`EMS254/tree/main/api/v1/views/user` - This is an path that has the routes/endpoints that are handling Registration, Login, User Profile, Logout
 
 [user_views.py](https://github.com/Bradkibs/EMS254/blob/main/api/v1/views/user/users_views.py)
 
