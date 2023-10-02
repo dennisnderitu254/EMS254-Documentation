@@ -52,9 +52,7 @@ storage.reload()
 [storage.py](https://github.com/Bradkibs/EMS254/blob/main/db/storage.py)
 
 
-
-
-## models
+### models
 
 [accounts.py](https://github.com/Bradkibs/EMS254/blob/main/models/accounts.py)
 
@@ -71,7 +69,7 @@ storage.reload()
 
 [users.py](https://github.com/Bradkibs/EMS254/blob/main/models/users.py)
 
-## Utils
+### Utils
 
 [messages.py](https://github.com/Bradkibs/EMS254/blob/main/utils/messages.py)
 
@@ -132,6 +130,7 @@ If it does, a new account number is generated. The method then creates an `Accou
 
 - `transact(self, amount, sender_id, receiver_id):` This method performs a transaction by subtracting the specified amount from the sender's account and adding it to the receiver's account. It also includes error checking, such as ensuring the amount is greater than 100, checking for sender and receiver IDs, verifying sufficient funds, and handling transactions using SQL transactions (`_db.begin()`, `_db.rollback()`, and `_db.save()`).
 
+### App
 
 [app.py](https://github.com/Bradkibs/EMS254/blob/main/app.py)
 
