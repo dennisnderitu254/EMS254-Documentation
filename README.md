@@ -6,22 +6,14 @@ This is an explanation on the backend structure of the Escrow System, EMS254.
 
 ### File Structure
 
-`api/v1/views` - This is an api directory that has the routes/endpoints that are handling Registration, Login, User Profile, Logout
+`EMS254/tree/main/api/v1/views/user` - This is an api directory that has the routes/endpoints that are handling Registration, Login, User Profile, Logout
 
-- `user_views.py`
-
-`@app_views.route('/register', methods=['POST'])` - Flask route handling User Registration
-
-`@app_views.route('/login', methods=['POST'])` - Flask route handling User Login
-
-`@app_views.route('/profile', methods=['GET'])` - Flask Route redirecting a user to profile after Login
-
-`@app_views.route('/logout', methods=['GET'])` - Flask Route handling Logout
+[user_views.py](https://github.com/Bradkibs/EMS254/blob/main/api/v1/views/user/users_views.py)
 
 
-`auth`
+#### auth
 
-* `auth.py` - this file enables the use of JWT Authentication,  Containing a class that allowed token creation and cookies to be set
+[auth.py](https://github.com/Bradkibs/EMS254/blob/main/auth/auth.py) - This file enables the use of JWT Authentication,  Containing a class that allowed token creation and cookies to be set
 
 `def create_token(self, identity):` -
 
