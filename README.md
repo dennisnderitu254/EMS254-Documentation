@@ -4,7 +4,6 @@ EMS254 is a mode of payment system that enables Third Party Payments using the E
 
 This is an explanation on the backend structure of the Escrow System, EMS254.
 
-
 File Structure
 
 `api/v1/views` - This is an api directory that has the routes/endpoints that are handling Registration, Login, User Profile, Logout
@@ -144,10 +143,9 @@ def logout():
 `@app_views.route('/logout', methods=['GET'])` - Flask Route handling Logout
 
 
-
 `auth`
 
-* `auth.py`
+* `auth.py` - this file enables the use of JWT Authentication,  Containing a class that allowed token creation and cookies to be set
 
 ```
 from flask_jwt_extended import create_access_token, get_jwt_identity, unset_jwt_cookies, \
@@ -183,7 +181,25 @@ class Authentication:
         unset_jwt_cookies(response, access_token)
 ```
 
+`def create_token(self, identity):`
 
+`def refresh_token(self, identity):`
+
+`def validate_jwt(self):`
+
+`def get_authenticated_user(self):`
+
+`def set_cookie(self, response, access_token):`
+
+`def unset_cookie(self, response, access_token):`
+
+
+
+`Authentication` is Done using JWT(JSON Web Token) - JWT stands for JSON Web Token. It is a compact,
+URL-safe means of representing claims to be transferred between two parties.
+The claims in a JWT are encoded as a JSON object that is used as the payload of a
+JSON Web Signature (JWS) structure or as the plaintext of a JSON Web Encryption (JWE) structure,
+enabling the claims to be digitally signed or integrity protected with a Message Authentication Code (MAC) and/or encrypted.
 
 
 
@@ -268,6 +284,26 @@ class UserAuth:
         except Exception as e:
             return None
 ```
+
+`def hash_password(self, password):`
+
+`def verify_password(self, candidate_password, hashed_password):`
+
+`def create_user(self, **kwargs):`
+
+`def get_user_by_email(self, email):`
+
+`def get_user_by_phone_number(self, phone_number):`
+
+`def get_user_by_id(self, id):`
+
+`def get_all_users(self):`
+
+`def delete_user(self, id):`
+
+`def update_user(self, id, email, password):`
+
+
 
 * `verify_user.py`
 
