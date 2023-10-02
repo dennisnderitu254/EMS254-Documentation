@@ -4,6 +4,7 @@ EMS254 is a mode of payment system that enables Third Party Payments using the E
 
 This is an explanation on the backend structure of the Escrow System, EMS254.
 
+
 ### File Structure
 
 `EMS254/tree/main/api/v1/views/user` - This is an path that has the routes/endpoints that are handling Registration, Login, User Profile, Logout
@@ -48,125 +49,32 @@ storage = DB()
 storage.reload()
 ```
 
-* `storage.py`
-
-`storage.py` - Python file that has CRUD (Create, Read, Update, Delete) Functionality for Database Operations
-
-`def reload(self):` - Reload
-
-`def add(self, obj):` - Add
-
-`def save(self):` - Save
-
-`def delete(self, obj=None):` - Delete
-
-`def query(self, cls):` - Query
-
-`def close(self):` - calls remove() method on the private session attr to close the session and stop using it
-
-`def begin(self):` - calls begin() method on the private session attr to start a transaction
-
-`def rollback(self):` - calls rollback() method on the private session attr to roll back a transaction
+[storage.py](https://github.com/Bradkibs/EMS254/blob/main/db/storage.py)
 
 
-`models`
-
-* `accounts.py`
-
-```
-from models.basemodel import BaseModel, Base
-from sqlalchemy import Column, String, DateTime, Boolean, ForeignKey
-from sqlalchemy.orm import relationship
-
-class Accounts(BaseModel, Base):
-    __tablename__ = 'accounts'
-    user_id = Column(String(255), ForeignKey('users.id'), nullable=False)
-    account_number = Column(String(255), nullable=False, unique=True)
-    Total_funds = Column(String(255), nullable=False)
-    incomming_funds = Column(String(255), nullable=False)
-    outgoing_funds = Column(String(255), nullable=False)
-
-    user = relationship("User", back_populates="accounts")
-
-    def __init__(self, *args, **kwargs):
-        """Initialize the account"""
-        super().__init__(*args, **kwargs)
-```
-
-* `basemodel.py`
-
-```
-#!usr/bin/python3
-"""
-Contains class BaseModel
-"""
-from sqlalchemy import Column, String, DateTime
-from sqlalchemy.ext.declarative import declarative_base
-import uuid
-from datetime import datetime
-
-time = "%Y-%m-%dT%H:%M:%S.%f"
-
-Base = declarative_base()
 
 
-class BaseModel:
-    """The BaseModel class from which future classes will be derived"""
+## models
 
-    id = Column(String(60), primary_key=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow)
-
-    def __init__(self, *args, **kwargs):
-        """Initialization of the base model"""
-        if kwargs:
-            for key, value in kwargs.items():
-                if key != "__class__":
-                    setattr(self, key, value)
-            if kwargs.get("created_at", None) and type(self.created_at) is str:
-                self.created_at = datetime.strptime(kwargs["created_at"], time)
-            else:
-                self.created_at = datetime.utcnow()
-            if kwargs.get("updated_at", None) and type(self.updated_at) is str:
-                self.updated_at = datetime.strptime(kwargs["updated_at"], time)
-            else:
-                self.updated_at = datetime.utcnow()
-            if kwargs.get("id", None) is None:
-                self.id = str(uuid.uuid4())
-        else:
-            self.id = str(uuid.uuid4())
-            self.created_at = datetime.utcnow()
-            self.updated_at = self.created_at
-
-    def __str__(self):
-        """String representation of the BaseModel class"""
-        return "[{:s}] ({:s}) {}".format(self.__class__.__name__, self.id,
-                                         self.__dict__)
-    def to_dict(self):
-        """Return a dictionary containing all keys/values of __dict__"""
-        my_dict = dict(self.__dict__)
-        my_dict["__class__"] = self.__class__.__name__
-        my_dict["created_at"] = self.created_at.isoformat()
-        my_dict["updated_at"] = self.updated_at.isoformat()
-        if "_sa_instance_state" in my_dict:
-            del my_dict["_sa_instance_state"]
-        return my_dict
-```
-
-* `messages.py` - Message Model that enables messages sent from sender and receiver
+[accounts.py](https://github.com/Bradkibs/EMS254/blob/main/models/accounts.py)
 
 
-* `transactions.py` - The transactions model
-    we keep the senders and receivers in the same table
-    and create a foreign key relationship to the users table
-    ceate a virtual column for the sender and receiver
-    in the users table
 
-* `users.py` - Model that Contains User Details and Facilitates Account Creation and Validation.
+[basemodel.py](https://github.com/Bradkibs/EMS254/blob/main/models/basemodel.py)
+
+
+[messages.py](https://github.com/Bradkibs/EMS254/blob/main/models/messages.py)
+
+
+[transactions.py](https://github.com/Bradkibs/EMS254/blob/main/models/transactions.py)
+
+
+[users.py](https://github.com/Bradkibs/EMS254/blob/main/models/users.py)
 
 ## Utils
 
-* `messages.py` -  Messages class: This seems to be a class used to represent messages.
+[messages.py](https://github.com/Bradkibs/EMS254/blob/main/utils/messages.py)
+
 
 `MessagesService` class: This class contains methods for managing messages.
 
@@ -188,7 +96,7 @@ and it appears to reload the database. The exact behavior of this method depends
 
 ### Transaction Logic file
 
-* `transaction_logic.py`
+[transaction_logic.py](https://github.com/Bradkibs/EMS254/blob/main/utils/transaction_logic.py)
 
 `TransactionService class:`
 
