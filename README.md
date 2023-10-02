@@ -200,55 +200,26 @@ class BaseModel:
 
 * `users.py` - Model that Contains User Details and Facilitates Account Creation and Validation.
 
-* `utils`
+## Utils
 
-* `messages.py` -
+* `messages.py` -  Messages class: This seems to be a class used to represent messages.
 
-```
-from models.messages import Messages
-from db.storage import DB
+`MessagesService` class: This class contains methods for managing messages.
 
-messages = Messages()
+`__db` attribute: This is an instance of a DB class
 
-class MessagesService:
-    __db = DB()
-    __db.reload()
+`__db.reload():` This line of code is called during the initialization of the MessagesService class,
+and it appears to reload the database. The exact behavior of this method depends on the implementation of the DB class.
 
-    def create_message(self, **kwargs):
-        """Create message"""
-        content = kwargs.get('content')
-        sender_id = kwargs.get('sender_id')
-        receiver_id = kwargs.get('receiver_id')
-        message = Messages(content=content, sender_id=sender_id, receiver_id=receiver_id)
-        self.__db.add(message)
-        self.__db.save()
-        return message
+`create_message(self, **kwargs):` This method is used to create a new message. It takes keyword arguments (`content`, `sender_id`, `receiver_id`) to create a message object, adds it to the database, and then saves the changes to the database. It returns the created message.
 
-    def get_message(self, message_id):
-        """Get message"""
-        message = self.__db.query(Messages).filter_by(id=message_id).first()
-        return message
+`get_message(self, message_id):` This method retrieves a message from the database based on its `message_id`.
 
-    def get_specific_user_messages(self, user_id):
-        """Get specific user messages"""
-        messages = self.__db.query(Messages).filter_by(receiver_id=user_id).all()
-        return messages
+`get_specific_user_messages(self, user_id):` This method retrieves all messages associated with a specific user, identified by `user_id`, from the database.
 
-    def delete_message(self, message_id):
-        """Delete message"""
-        message = self.__db.query(Messages).filter_by(id=message_id).first()
-        self.__db.delete(message)
-        self.__db.save()
-        return message
+`delete_message(self, message_id):` This method deletes a message from the database based on its `message_id`.
 
-    def delete_all_user_messages(self, user_id):
-        """Delete all user messages"""
-        messages = self.__db.query(Messages).filter_by(receiver_id=user_id).all()
-        for message in messages:
-            self.__db.delete(message)
-            self.__db.save()
-        return messages
-```
+`delete_all_user_messages(self, user_id):` This method deletes all messages associated with a specific user, identified by `user_id`, from the database.
 
 
 * `transaction_logic.py`
