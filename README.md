@@ -15,18 +15,6 @@ This is an explanation on the backend structure of the Escrow System, EMS254.
 
 [auth.py](https://github.com/Bradkibs/EMS254/blob/main/auth/auth.py) - This file enables the use of JWT Authentication,  Containing a class that allowed token creation and cookies to be set
 
-`def create_token(self, identity):` -
-
-`def refresh_token(self, identity):` -
-
-`def validate_jwt(self):` -
-
-`def get_authenticated_user(self):` -
-
-`def set_cookie(self, response, access_token):` -
-
-`def unset_cookie(self, response, access_token):` -
-
 
 `Authentication` is Done using JWT(JSON Web Token) - JWT stands for JSON Web Token. It is a compact,
 URL-safe means of representing claims to be transferred between two parties.
@@ -34,28 +22,12 @@ The claims in a JWT are encoded as a JSON object that is used as the payload of 
 JSON Web Signature (JWS) structure or as the plaintext of a JSON Web Encryption (JWE) structure,
 enabling the claims to be digitally signed or integrity protected with a Message Authentication Code (MAC) and/or encrypted.
 
-* `user_auth.py`
-
-`def hash_password(self, password):` -
-
-`def verify_password(self, candidate_password, hashed_password):` -
-
-`def create_user(self, **kwargs):` -
-
-`def get_user_by_email(self, email):` -
-
-`def get_user_by_phone_number(self, phone_number):` -
-
-`def get_user_by_id(self, id):` -
-
-`def get_all_users(self):` -
-
-`def delete_user(self, id):` -
-
-`def update_user(self, id, email, password):` -
+[user_auth.py](https://github.com/Bradkibs/EMS254/blob/main/auth/user_auth.py)
 
 
-* `verify_user.py`
+
+
+[verify_user.py](https://github.com/Bradkibs/EMS254/blob/main/auth/verify_user.py)
 
 
 `User Verification`
@@ -65,9 +37,9 @@ enabling the claims to be digitally signed or integrity protected with a Message
 `def send_verification_email(user_email, verification_token):`
 
 
-`db`
+### db
 
-* `__init__.py`
+[__init__.py](https://github.com/Bradkibs/EMS254/blob/main/db/__init__.py)
 
 ```
 from db.storage import DB
