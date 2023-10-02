@@ -7,10 +7,9 @@ This is an explanation on the backend structure of the Escrow System, EMS254.
 
 File Structure
 
-`api/v1/views`
+`api/v1/views` - This is an api directory that has the routes/endpoints that are handling Registration, Login, User Profile, Logout
 
 - `user_views.py`
-
 
 ```
 from flask import jsonify, request
