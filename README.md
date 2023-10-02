@@ -222,7 +222,31 @@ and it appears to reload the database. The exact behavior of this method depends
 `delete_all_user_messages(self, user_id):` This method deletes all messages associated with a specific user, identified by `user_id`, from the database.
 
 
+### Transaction Logic file
+
 * `transaction_logic.py`
+
+`TransactionService class:`
+
+- `__db attribute:` This is an instance of a DB class, representing a database connection.
+
+- `__db.reload():` This line of code is called during the initialization of the TransactionService class, and it reloads the database.
+
+- `create_transaction(self, **kwargs):` This method is used to create a new transaction. It takes keyword arguments (`sender_id`, `receiver_id`, `amount`) to create a `Transactions` object, adds it to the database, and then saves the changes to the database. It returns the created transaction.
+
+- `get_transaction(self, transaction_id):` This method retrieves a transaction from the database based on its `transaction_id`.
+
+- `view_user_specific_transactions(self, user_id):` This method retrieves all transactions where the specified user is the sender, identified by `user_id`.
+
+
+
+
+
+
+
+
+
+
 
 ```
 from models.transactions import Transactions
@@ -254,85 +278,27 @@ class TransactionService:
         return transactions
 ```
 
-
+### User account file
 * `user_account.py`
 
-```
-from models.accounts import Accounts
-from db.storage import DB
-import random
-from flask import jsonify
-from sqlalchemy.exc import SQLAlchemyError
+`AccountService class:`
 
 
-class AccountService:
-    __db = DB()
-    __db.reload()
+- `__db attribute:` This is an instance of a DB class, representing a database connection.
 
+- `__db.reload():` This line of code is called during the initialization of the `AccountService class`, and it reloads the database.
 
-    def create_account_number(self):
-        """Create account number"""
-        account_number = str(random.randint(10*9, 10**10-1))
-        return account_number
+- `create_account_number(self):` This method generates a random account number.
 
-    def create_account(self, **kwargs):
-        """Create account"""
-        account_number = self.create_account_number()
-        # check if account number exists
-        account_exists = self.__db.query(Accounts).filter_by(account_number=account_number).first()
-        if account_exists:
-            while account_exists:
-                account_number = self.create_account_number()
-        Total_funds = kwargs.get('Total_funds')
-        incomming_funds = kwargs.get('incomming_funds')
-        outgoing_funds = kwargs.get('outgoing_funds')
-        user_id = kwargs.get('user_id')
-        account = Accounts(account_number=account_number, Total_funds=Total_funds, incomming_funds=incomming_funds, outgoing_funds=outgoing_funds, user_id=user_id)
-        self.__db.add(account)
-        self.__db.save()
-        return account
+- `create_account(self, **kwargs):` This method creates a new account by generating a unique account number and checking if it already exists in the database.
+If it does, a new account number is generated. The method then creates an `Accounts` object, adds it to the database, and saves the changes.
 
-    def get_account(self, account_number):
-        """Get account"""
-        account = self.__db.query(Accounts).filter_by(account_number=account_number).first()
-        return account
+- `get_account(self, account_number):` This method retrieves an account from the database based on its account number.
 
-    def add_total_funds(self, account_number, amount):
-        """Add total funds"""
-        account = self.__db.query(Accounts).filter_by(account_number=account_number).first()
-        account.Total_funds += amount
-        self.__db.save()
-        return account
+- `add_total_funds(self, account_number, amount):` This method adds funds to an account's total funds.
 
-    def transact(self, amount, sender_id, receiver_id):
-        """ creating a sql transaction"""
-        if not amount and amount < 100:
-            return jsonify({"message": "Amount must be greater than 100"}), 400
-        if not sender_id:
-            return jsonify({"message": "Sender id is required"}), 400
-        if not receiver_id:
-            return jsonify({"message": "Receiver id is required"}), 400
-        sender_account = self.__db.query(Accounts).filter_by(user_id=sender_id).first()
-        receiver_account = self.__db.query(Accounts).filter_by(user_id=receiver_id).first()
+- `transact(self, amount, sender_id, receiver_id):` This method performs a transaction by subtracting the specified amount from the sender's account and adding it to the receiver's account. It also includes error checking, such as ensuring the amount is greater than 100, checking for sender and receiver IDs, verifying sufficient funds, and handling transactions using SQL transactions (`_db.begin()`, `_db.rollback()`, and `_db.save()`).
 
-        if sender_account and receiver_account:
-            if sender_account.Total_funds < amount:
-                return jsonify({"message": "Insufficient funds"}), 400
-            try:
-                self._db.begin()
-                sender_account.Total_funds -= amount
-                sender_account.outgoing_funds += amount
-                receiver_account.incoming_funds += amount
-                self._db.save()
-
-            except SQLAlchemyError as e:
-                self._db.rollback()
-                return jsonify({"message": "Transaction failed"}), 400
-        else:
-            return jsonify({"message": "The sender_account or receiver account does not exist"}), 400
-
-        return jsonify({"message": "Transaction successful"}), 200
-```
 
 `app.py`
 
