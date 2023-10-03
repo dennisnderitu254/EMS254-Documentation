@@ -15,25 +15,25 @@ This is an explanation on the backend structure of the Escrow System, EMS254.
 
 `Input Data Validation:`
 
-The function retrieves user registration data from the JSON payload of an HTTP request using `request.get_json()`.
+- The function retrieves user registration data from the JSON payload of an HTTP request using `request.get_json()`.
 
-It checks if the required fields (`email`, `password`, `first_name`, `last_name`, `phone_number`, `location`) are present in the data. If any of them is missing, it returns a JSON response with a 400 status code and an appropriate error message.
+- It checks if the required fields (`email`, `password`, `first_name`, `last_name`, `phone_number`, `location`) are present in the data. If any of them is missing, it returns a JSON response with a 400 status code and an appropriate error message.
 
 `User Registration:`
 
-It checks if a user with the provided email already exists. If so, it returns a JSON response with a 409 status code and a message indicating that the user already exists.
+- It checks if a user with the provided email already exists. If so, it returns a JSON response with a 409 status code and a message indicating that the user already exists.
 
-If the user does not exist, it proceeds to create a new user using `user_auth.create_user()` with the provided registration data.
+- If the user does not exist, it proceeds to create a new user using `user_auth.create_user()` with the provided registration data.
 
 `Account Creation:`
 
-After creating the user, it calls `account_service.create_account()` to create a corresponding account for the user. The account is initialized with zero funds (`Total_funds`, `incomming_funds`, `outgoing_funds`), and the `user_id` is set to the ID of the newly created user.
+- After creating the user, it calls `account_service.create_account()` to create a corresponding account for the user. The account is initialized with zero funds (`Total_funds`, `incomming_funds`, `outgoing_funds`), and the `user_id` is set to the ID of the newly created user.
 
 `Response:`
 
-It constructs a JSON response with a 201 status code (indicating successful creation) and includes information about the user and the created account.
+- It constructs a JSON response with a 201 status code (indicating successful creation) and includes information about the user and the created account.
 
-The response includes the user ID, a success message, and details about the created account.
+- The response includes the user ID, a success message, and details about the created account.
 
 #### `@app_views.route('/login', methods=['POST'])`
 
@@ -81,19 +81,19 @@ enabling the claims to be digitally signed or integrity protected with a Message
 
 #### `class Authentication:`
 
-`__token` Attribute: This is a private attribute of the class used to store the access token. It's initially set to `None`.
+- `__token` Attribute: This is a private attribute of the class used to store the access token. It's initially set to `None`.
 
-`create_token(self, identity) Method`: This method creates a new access token using the `create_access_token` function. It takes an `identity` parameter and sets the `__token` attribute to the generated token. The token is then returned.
+- `create_token(self, identity) Method`: This method creates a new access token using the `create_access_token` function. It takes an `identity` parameter and sets the `__token` attribute to the generated token. The token is then returned.
 
-`refresh_token(self, identity) Method`: This method seems to be intended to refresh the token by calling `create_token` with the provided `identity`. However, it doesn't appear to be effectively refreshing the token since it doesn't update the `__token` attribute.
+- `refresh_token(self, identity) Method`: This method seems to be intended to refresh the token by calling `create_token` with the provided `identity`. However, it doesn't appear to be effectively refreshing the token since it doesn't update the `__token` attribute.
 
-`validate_jwt(self) Method`: This method attempts to validate the JWT in the request using the `verify_jwt_in_request` function. If an exception occurs during the validation, it returns `False`; otherwise, it returns `True`.
+- `validate_jwt(self) Method`: This method attempts to validate the JWT in the request using the `verify_jwt_in_request` function. If an exception occurs during the validation, it returns `False`; otherwise, it returns `True`.
 
-`get_authenticated_user(self) Method`: This method checks if the JWT is valid using `validate_jwt`. If the JWT is valid, it retrieves and returns the identity from the token using `get_jwt_identity`. If the JWT is not valid, it returns `None`.
+- `get_authenticated_user(self) Method`: This method checks if the JWT is valid using `validate_jwt`. If the JWT is valid, it retrieves and returns the identity from the token using `get_jwt_identity`. If the JWT is not valid, it returns `None`.
 
-`set_cookie(self, response, access_token) Method`: This method sets the access token as a cookie in the provided response using `set_access_cookies`.
+- `set_cookie(self, response, access_token) Method`: This method sets the access token as a cookie in the provided response using `set_access_cookies`.
 
-`unset_cookie(self, response, access_token) Method`: This method unsets (removes) the access token cookie from the provided response using `unset_jwt_cookies`.
+- `unset_cookie(self, response, access_token) Method`: This method unsets (removes) the access token cookie from the provided response using `unset_jwt_cookies`.
 
 
 [user_auth.py](https://github.com/Bradkibs/EMS254/blob/main/auth/user_auth.py)
@@ -102,50 +102,50 @@ enabling the claims to be digitally signed or integrity protected with a Message
 
 `UserAuth`
 
-It includes methods for hashing and verifying passwords, creating users, and interacting with user data in a database.
+- It includes methods for hashing and verifying passwords, creating users, and interacting with user data in a database.
 
-`Database Initialization`: The class has a class-level attribute `_db` that represents a database connection, and it's initialized and reloaded during the class creation.
+- `Database Initialization`: The class has a class-level attribute `_db` that represents a database connection, and it's initialized and reloaded during the class creation.
 
-`hash_password(self, password) Method`: This method takes a password as input, encodes it, generates a salt using `gensalt()`, hashes the password with the salt using `hashpw()`, and returns the hashed password as a UTF-8 decoded string.
+- `hash_password(self, password) Method`: This method takes a password as input, encodes it, generates a salt using `gensalt()`, hashes the password with the salt using `hashpw()`, and returns the hashed password as a UTF-8 decoded string.
 
-`verify_password(self, candidate_password, hashed_password) Method`: This method takes a candidate password and a hashed password, compares them using `checkpw()`, and returns `True` if the passwords match, indicating a successful verification.
+- `verify_password(self, candidate_password, hashed_password) Method`: This method takes a candidate password and a hashed password, compares them using `checkpw()`, and returns `True` if the passwords match, indicating a successful verification.
 
-`create_user(self, **kwargs) Method`: This method creates a new user by taking various user details as keyword arguments, hashing the provided password using `hash_password`, creating a new `User` object, adding it to the database, and saving the changes. The method returns the created user.
+- `create_user(self, **kwargs) Method`: This method creates a new user by taking various user details as keyword arguments, hashing the provided password using `hash_password`, creating a new `User` object, adding it to the database, and saving the changes. The method returns the created user.
 
-`get_user_by_email(self, email) Method`: Retrieves a user from the database based on the provided email.
+- `get_user_by_email(self, email) Method`: Retrieves a user from the database based on the provided email.
 
-`get_user_by_phone_number(self, phone_number) Method`: Retrieves a user from the database based on the provided phone number.
+- `get_user_by_phone_number(self, phone_number) Method`: Retrieves a user from the database based on the provided phone number.
 
-`get_user_by_id(self, id) Method`: Retrieves a user from the database based on the provided user ID.
+- `get_user_by_id(self, id) Method`: Retrieves a user from the database based on the provided user ID.
 
-`get_all_users(self) Method`: Retrieves all users from the database.
+- `get_all_users(self) Method`: Retrieves all users from the database.
 
-`delete_user(self, id) Method`: Deletes a user from the database based on the provided user ID.
+- `delete_user(self, id) Method`: Deletes a user from the database based on the provided user ID.
 
-`update_user(self, id, email, password) Method`: Updates a user's email and/or password in the database based on the provided user ID. It retrieves the user, modifies the relevant fields, and saves the changes.
+- `update_user(self, id, email, password) Method`: Updates a user's email and/or password in the database based on the provided user ID. It retrieves the user, modifies the relevant fields, and saves the changes.
 
 
 [verify_user.py](https://github.com/Bradkibs/EMS254/blob/main/auth/verify_user.py)
 
 `generate_verification_token() Function`:
 
-This function generates a URL-safe verification token using the `secrets` module. The `token_urlsafe` method generates a random URL-safe text with the specified number of bytes (16 bytes in this case).
+- This function generates a URL-safe verification token using the `secrets` module. The `token_urlsafe` method generates a random URL-safe text with the specified number of bytes (16 bytes in this case).
 
-The generated token is intended to be used as part of a verification URL sent to users for email confirmation.
+- The generated token is intended to be used as part of a verification URL sent to users for email confirmation.
 
 `send_verification_email(user_email, verification_token) Function`:
 
-This function sends a verification email to the specified `user_email` with a verification token.
+- This function sends a verification email to the specified `user_email` with a verification token.
 
-It uses the `Mail` and `Message` classes from an email library (possibly Flask-Mail) to create and send an email.
+- It uses the `Mail` and `Message` classes from an email library (possibly Flask-Mail) to create and send an email.
 
-The subject of the email is set to 'Verification Email for EMS254', and the sender is retrieved from the environment variable `VERIFICATION_EMAIL`.
+- The subject of the email is set to 'Verification Email for EMS254', and the sender is retrieved from the environment variable `VERIFICATION_EMAIL`.
 
-The email body includes a verification URL constructed using `url_for`. The `url_for` function generates a fully qualified URL for a given endpoint (in this case, 'app_views.register') with the verification token as a parameter. The`_external=True` argument ensures that an absolute URL is generated.
+- The email body includes a verification URL constructed using `url_for`. The `url_for` function generates a fully qualified URL for a given endpoint (in this case, 'app_views.register') with the verification token as a parameter. The`_external=True` argument ensures that an absolute URL is generated.
 
-The email body also includes a message instructing the recipient to click the verification link to confirm their email address for EMS254. It also provides information on what to do if they didn't register for EMS254.
+- The email body also includes a message instructing the recipient to click the verification link to confirm their email address for EMS254. It also provides information on what to do if they didn't register for EMS254.
 
-The function attempts to send the email using `mail.send(msg)`. If the email is sent successfully, it returns a JSON response with a success message and status code 200. If there's an exception during the email sending process, it returns a JSON response with an error message and status code 502.
+- The function attempts to send the email using `mail.send(msg)`. If the email is sent successfully, it returns a JSON response with a success message and status code 200. If there's an exception during the email sending process, it returns a JSON response with an error message and status code 502.
 
 ## db
 
@@ -325,8 +325,6 @@ and it appears to reload the database. The exact behavior of this method depends
 `delete_all_user_messages(self, user_id):` This method deletes all messages associated with a specific user, identified by `user_id`, from the database.
 
 
-### Transaction Logic file
-
 [transaction_logic.py](https://github.com/Bradkibs/EMS254/blob/main/utils/transaction_logic.py)
 
 `TransactionService class:`
@@ -341,8 +339,6 @@ and it appears to reload the database. The exact behavior of this method depends
 
 - `view_user_specific_transactions(self, user_id):` This method retrieves all transactions where the specified user is the sender, identified by `user_id`.
 
-
-### User account file
 
 [user_account.py](https://github.com/Bradkibs/EMS254/blob/main/utils/transaction_logic.py)
 
