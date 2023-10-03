@@ -289,6 +289,17 @@ The `back_populates` parameter specifies the attribute on the 'User' model that 
 
 - `last_login`: A column representing the timestamp of the user's last login. It is of type `DateTime` and cannot be null.
 
+`Relationships`:
+
+`accounts`: A relationship to the 'Accounts' table. It indicates that a user has an associated account. The uselist=False parameter suggests that it's a one-to-one relationship.
+
+`sent_transactions` and `received_transactions`: Relationships to the 'Transactions' table. They indicate the transactions where the user is the sender or receiver. These relationships use the `relationship` function and specify the foreign keys for each relationship.
+
+`sent_messages` and `received_messages`: Relationships to the 'Messages' table. They indicate the messages where the user is the sender or receiver. Similar to the transaction relationships, they use the `relationship` function and specify the foreign keys for each relationship.
+
+`Constructor (__init__) Method`:
+
+The constructor initializes the object by calling the constructor of the superclass (`super().__init__`) with any passed arguments and keyword arguments.
 
 
 ### Utils
