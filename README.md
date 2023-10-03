@@ -218,6 +218,28 @@ Returns a dictionary representation of the object, including class name, `id`, `
 
 [messages.py](https://github.com/Bradkibs/EMS254/blob/main/models/messages.py)
 
+`class Messages(BaseModel, Base):`
+
+`Class Definition`:
+
+The class inherits from both `BaseModel` and `Base`, indicating that it is an SQLAlchemy model and presumably extends some common functionality from the `BaseModel` class.
+
+The `__tablename__` attribute specifies the name of the table in the database. In this case, it's set to 'messages'.
+
+`Attributes`:
+
+`content`: A column representing the content of the message. It is of type Text and cannot be null.
+
+`sender_id` and `receiver_id`: Columns representing foreign keys referencing the 'id' column in the 'users' table. These columns establish relationships with the 'User' model.
+
+`Relationships`:
+
+`sender` and `receiver`: These are relationship attributes that define the sender and receiver relationships with the 'User' model. They use the relationship function from SQLAlchemy.
+
+`foreign_keys` parameter is used to specify which columns are used as foreign keys for the relationships.
+
+The `back_populates` parameter specifies the attribute on the 'User' model that represents the reverse relationship. It indicates that 'User' instances will have attributes named 'sent_messages' and 'received_messages' to access their respective messages.
+
 
 [transactions.py](https://github.com/Bradkibs/EMS254/blob/main/models/transactions.py)
 
