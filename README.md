@@ -11,7 +11,7 @@ This is an explanation on the backend structure of the Escrow System, EMS254.
 
 [user_views.py](https://github.com/Bradkibs/EMS254/blob/main/api/v1/views/user/users_views.py)
 
-1. `@app_views.route('/register', methods=['POST'])`
+#### `@app_views.route('/register', methods=['POST'])`
 
 `Input Data Validation:`
 
@@ -35,8 +35,7 @@ It constructs a JSON response with a 201 status code (indicating successful crea
 
 The response includes the user ID, a success message, and details about the created account.
 
-
-2. `@app_views.route('/login', methods=['POST'])`
+#### `@app_views.route('/login', methods=['POST'])`
 
 `login_user()` - handles login requests using either an email address or a phone number as identifiers.
 
@@ -55,7 +54,7 @@ The response includes the user ID, a success message, and details about the crea
 
 `Response`: Finally, it returns a JSON response indicating successful login with a 200 HTTP status code.
 
-3. `@app_views.route('/profile', methods=['GET'])`
+#### `@app_views.route('/profile', methods=['GET'])`
 
 `get_user()` - It uses a JSON Web Token (JWT) for authentication (`@jwt_required()`) and then retrieves user information based on the authenticated user's ID.
 
@@ -65,7 +64,7 @@ The response includes the user ID, a success message, and details about the crea
 
 `Response`: If the user is found, it constructs a dictionary (user_data) containing various user attributes such as email, first name, last name, phone number, location, role, is_active, and last login. It returns this user data as a JSON response with a 200 HTTP status code.
 
-4. `@app_views.route('/logout', methods=['POST'])`
+#### `@app_views.route('/logout', methods=['POST'])`
 
 `logout()` - It handles logout requests by extracting the access token from the 'Authorization' header, checking if the user is authenticated, and then logging them out by removing the access token
 
