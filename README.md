@@ -96,10 +96,31 @@ enabling the claims to be digitally signed or integrity protected with a Message
 `unset_cookie(self, response, access_token) Method`: This method unsets (removes) the access token cookie from the provided response using `unset_jwt_cookies`.
 
 
-
 [user_auth.py](https://github.com/Bradkibs/EMS254/blob/main/auth/user_auth.py)
 
+#### `class UserAuth:`
 
+`UserAuth` - It includes methods for hashing and verifying passwords, creating users, and interacting with user data in a database.
+
+`Database Initialization`: The class has a class-level attribute `_db` that represents a database connection, and it's initialized and reloaded during the class creation.
+
+`hash_password(self, password) Method`: This method takes a password as input, encodes it, generates a salt using `gensalt()`, hashes the password with the salt using `hashpw()`, and returns the hashed password as a UTF-8 decoded string.
+
+`verify_password(self, candidate_password, hashed_password) Method`: This method takes a candidate password and a hashed password, compares them using `checkpw()`, and returns `True` if the passwords match, indicating a successful verification.
+
+`create_user(self, **kwargs) Method`: This method creates a new user by taking various user details as keyword arguments, hashing the provided password using `hash_password`, creating a new `User` object, adding it to the database, and saving the changes. The method returns the created user.
+
+`get_user_by_email(self, email) Method`: Retrieves a user from the database based on the provided email.
+
+`get_user_by_phone_number(self, phone_number) Method`: Retrieves a user from the database based on the provided phone number.
+
+`get_user_by_id(self, id) Method`: Retrieves a user from the database based on the provided user ID.
+
+`get_all_users(self) Method`: Retrieves all users from the database.
+
+`delete_user(self, id) Method`: Deletes a user from the database based on the provided user ID.
+
+`update_user(self, id, email, password) Method`: Updates a user's email and/or password in the database based on the provided user ID. It retrieves the user, modifies the relevant fields, and saves the changes.
 
 
 [verify_user.py](https://github.com/Bradkibs/EMS254/blob/main/auth/verify_user.py)
