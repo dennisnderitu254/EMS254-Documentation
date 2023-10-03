@@ -304,6 +304,13 @@ SQLAlchemy model class named `Accounts`. This class represents a table in a rela
 
 ### Utils
 
+[Admin.py](https://github.com/Bradkibs/EMS254/blob/main/utils/Admin.py)
+
+[GetRelationships.py](https://github.com/Bradkibs/EMS254/blob/main/utils/GetRelationships.py)
+
+[TransactionServices.py](https://github.com/Bradkibs/EMS254/blob/main/utils/TransactionServices.py)
+
+
 [messages.py](https://github.com/Bradkibs/EMS254/blob/main/utils/messages.py)
 
 
