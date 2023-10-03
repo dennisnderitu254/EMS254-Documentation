@@ -247,27 +247,49 @@ The `back_populates` parameter specifies the attribute on the 'User' model that 
 
 `Class Definition`:
 
-The class inherits from both `BaseModel` and `Base`, indicating that it is an SQLAlchemy model and presumably extends some common functionality from the `BaseModel` class.
+- The class inherits from both `BaseModel` and `Base`, indicating that it is an SQLAlchemy model and presumably extends some common functionality from the `BaseModel` class.
 
-The `__tablename__` attribute specifies the name of the table in the database. In this case, it's set to 'transactions'.
+- The `__tablename__` attribute specifies the name of the table in the database. In this case, it's set to 'transactions'.
 
 `Attributes`:
 
-`sender_id` and `receiver_id`: Columns representing foreign keys referencing the 'id' column in the 'users' table. These columns establish relationships with the 'User' model.
+- `sender_id` and `receiver_id`: Columns representing foreign keys referencing the 'id' column in the 'users' table. These columns establish relationships with the 'User' model.
 
-`amount`: A column representing the amount of the transaction. It is of type `Float` and cannot be null.
+- `amount`: A column representing the amount of the transaction. It is of type `Float` and cannot be null.
 
-`status`: A column representing the status of the transaction. It is of type `String(255)` and has a default value of 'pending'.
+- `status`: A column representing the status of the transaction. It is of type `String(255)` and has a default value of 'pending'.
 
 `Relationships`:
 
-`sender` and `receiver`: These are relationship attributes that define the sender and receiver relationships with the 'User' model. They use the `relationship` function from SQLAlchemy.
+- `sender` and `receiver`: These are relationship attributes that define the sender and receiver relationships with the 'User' model. They use the `relationship` function from SQLAlchemy.
 
-`foreign_keys` parameter is used to specify which columns are used as foreign keys for the relationships.
+- `foreign_keys` parameter is used to specify which columns are used as foreign keys for the relationships.
 
-The `back_populates` parameter specifies the attribute on the 'User' model that represents the reverse relationship. It indicates that 'User' instances will have attributes named 'sent_transactions' and 'received_transactions' to access their respective transactions.
+- The `back_populates` parameter specifies the attribute on the 'User' model that represents the reverse relationship. It indicates that 'User' instances will have attributes named 'sent_transactions' and 'received_transactions' to access their respective transactions.
 
 [users.py](https://github.com/Bradkibs/EMS254/blob/main/models/users.py)
+
+`class User(BaseModel, Base):`
+
+`Class Definition`:
+
+- The class inherits from both `BaseModel` and `Base`, indicating that it is an SQLAlchemy model and presumably extends some common functionality from the `BaseModel` class.
+
+- The `__tablename__` attribute specifies the name of the table in the database. In this case, it's set to 'users'.
+
+`Attributes`:
+
+- `email, first_name, last_name, phone_number, location`: Columns representing user information. They are of type `String` and cannot be null. The location column has a default value of 'KENYA'.
+
+- `password`: A column representing the user's password. It is of type `String` and cannot be null.
+
+- `role`: A column representing the user's role. It uses `SQLAlchemyEnum` to define an enumeration for roles ('admin', 'user', 'customer_service'). The default role is 'user'.
+
+- `is_active`: A column indicating whether the user is active or not. It is of type Boolean with a default value of `False`.
+
+- `last_login`: A column representing the timestamp of the user's last login. It is of type `DateTime` and cannot be null.
+
+
 
 ### Utils
 
