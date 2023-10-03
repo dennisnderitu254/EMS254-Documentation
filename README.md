@@ -291,15 +291,15 @@ SQLAlchemy model class named `Accounts`. This class represents a table in a rela
 
 `Relationships`:
 
-`accounts`: A relationship to the 'Accounts' table. It indicates that a user has an associated account. The uselist=False parameter suggests that it's a one-to-one relationship.
+- `accounts`: A relationship to the 'Accounts' table. It indicates that a user has an associated account. The uselist=False parameter suggests that it's a one-to-one relationship.
 
-`sent_transactions` and `received_transactions`: Relationships to the 'Transactions' table. They indicate the transactions where the user is the sender or receiver. These relationships use the `relationship` function and specify the foreign keys for each relationship.
+- `sent_transactions` and `received_transactions`: Relationships to the 'Transactions' table. They indicate the transactions where the user is the sender or receiver. These relationships use the `relationship` function and specify the foreign keys for each relationship.
 
-`sent_messages` and `received_messages`: Relationships to the 'Messages' table. They indicate the messages where the user is the sender or receiver. Similar to the transaction relationships, they use the `relationship` function and specify the foreign keys for each relationship.
+- `sent_messages` and `received_messages`: Relationships to the 'Messages' table. They indicate the messages where the user is the sender or receiver. Similar to the transaction relationships, they use the `relationship` function and specify the foreign keys for each relationship.
 
 `Constructor (__init__) Method`:
 
-The constructor initializes the object by calling the constructor of the superclass (`super().__init__`) with any passed arguments and keyword arguments.
+- The constructor initializes the object by calling the constructor of the superclass (`super().__init__`) with any passed arguments and keyword arguments.
 
 
 ### Utils
@@ -309,20 +309,20 @@ The constructor initializes the object by calling the constructor of the supercl
 
 `MessagesService` class: This class contains methods for managing messages.
 
-`__db` attribute: This is an instance of a DB class
+- `__db` attribute: This is an instance of a DB class
 
-`__db.reload():` This line of code is called during the initialization of the MessagesService class,
+- `__db.reload():` This line of code is called during the initialization of the MessagesService class,
 and it appears to reload the database. The exact behavior of this method depends on the implementation of the DB class.
 
-`create_message(self, **kwargs):` This method is used to create a new message. It takes keyword arguments (`content`, `sender_id`, `receiver_id`) to create a message object, adds it to the database, and then saves the changes to the database. It returns the created message.
+- `create_message(self, **kwargs):` This method is used to create a new message. It takes keyword arguments (`content`, `sender_id`, `receiver_id`) to create a message object, adds it to the database, and then saves the changes to the database. It returns the created message.
 
-`get_message(self, message_id):` This method retrieves a message from the database based on its `message_id`.
+- `get_message(self, message_id):` This method retrieves a message from the database based on its `message_id`.
 
-`get_specific_user_messages(self, user_id):` This method retrieves all messages associated with a specific user, identified by `user_id`, from the database.
+- `get_specific_user_messages(self, user_id):` This method retrieves all messages associated with a specific user, identified by `user_id`, from the database.
 
-`delete_message(self, message_id):` This method deletes a message from the database based on its `message_id`.
+- `delete_message(self, message_id):` This method deletes a message from the database based on its `message_id`.
 
-`delete_all_user_messages(self, user_id):` This method deletes all messages associated with a specific user, identified by `user_id`, from the database.
+- `delete_all_user_messages(self, user_id):` This method deletes all messages associated with a specific user, identified by `user_id`, from the database.
 
 
 [transaction_logic.py](https://github.com/Bradkibs/EMS254/blob/main/utils/transaction_logic.py)
