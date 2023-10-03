@@ -346,6 +346,23 @@ SQLAlchemy model class named `Accounts`. This class represents a table in a rela
 
 [TransactionServices.py](https://github.com/Bradkibs/EMS254/blob/main/utils/TransactionServices.py)
 
+`class TransactionService:`
+
+`Class Attributes`:
+
+- `__db`: This is a class attribute that represents an instance of the DB class. It is created when an instance of the TransactionService class is created.
+
+- The `reload()` method is called on the `__db` instance, indicating that it might be involved in managing database connections or configurations.
+
+`Methods`:
+
+`create_transaction(**kwargs)`: This method is responsible for creating a new transaction. It takes keyword arguments (kwargs) containing information about the transaction, such as `sender_id`, `receiver_id`, and `amount`. It creates a new instance of the `Transactions` model, sets its attributes with the provided information, adds it to the database, and then saves the changes.
+
+`get_transaction(transaction_id)`: This method retrieves a specific transaction from the database based on the provided `transaction_id`.
+
+`view_user_specific_transactions(user_id)`: This method retrieves all transactions where the provided `user_id` matches the `sender_id`. It retrieves a list of transactions from the database.
+
+
 
 [messages.py](https://github.com/Bradkibs/EMS254/blob/main/utils/messages.py)
 
