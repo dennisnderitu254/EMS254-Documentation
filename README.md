@@ -69,7 +69,6 @@ The response includes the user ID, a success message, and details about the crea
 `logout()` - It handles logout requests by extracting the access token from the 'Authorization' header, checking if the user is authenticated, and then logging them out by removing the access token
 
 
-
 ### auth
 
 `Authentication` is Done using JWT(JSON Web Token) - JWT stands for JSON Web Token. It is a compact,
@@ -79,6 +78,22 @@ JSON Web Signature (JWS) structure or as the plaintext of a JSON Web Encryption 
 enabling the claims to be digitally signed or integrity protected with a Message Authentication Code (MAC) and/or encrypted.
 
 [auth.py](https://github.com/Bradkibs/EMS254/blob/main/auth/auth.py) - This file enables the use of JWT Authentication,  Containing a class that allowed token creation and cookies to be set
+
+#### `class Authentication:`
+
+`__token` Attribute: This is a private attribute of the class used to store the access token. It's initially set to `None`.
+
+`create_token(self, identity) Method`: This method creates a new access token using the `create_access_token` function. It takes an `identity` parameter and sets the `__token` attribute to the generated token. The token is then returned.
+
+`refresh_token(self, identity) Method`: This method seems to be intended to refresh the token by calling `create_token` with the provided `identity`. However, it doesn't appear to be effectively refreshing the token since it doesn't update the `__token` attribute.
+
+`validate_jwt(self) Method`: This method attempts to validate the JWT in the request using the `verify_jwt_in_request` function. If an exception occurs during the validation, it returns `False`; otherwise, it returns `True`.
+
+`get_authenticated_user(self) Method`: This method checks if the JWT is valid using `validate_jwt`. If the JWT is valid, it retrieves and returns the identity from the token using `get_jwt_identity`. If the JWT is not valid, it returns `None`.
+
+`set_cookie(self, response, access_token) Method`: This method sets the access token as a cookie in the provided response using `set_access_cookies`.
+
+`unset_cookie(self, response, access_token) Method`: This method unsets (removes) the access token cookie from the provided response using `unset_jwt_cookies`.
 
 
 
