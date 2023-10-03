@@ -189,6 +189,32 @@ The `user` attribute establishes a bidirectional relationship between the 'User'
 
 [basemodel.py](https://github.com/Bradkibs/EMS254/blob/main/models/basemodel.py)
 
+`BaseModel`
+
+Model to be used as a base class for other models in an ORM-based system.
+
+`Attributes`:
+
+`id`: A unique identifier for the model, typically a UUID stored as a string.
+`created_at`: A timestamp indicating the creation time of the model.
+`updated_at`: A timestamp indicating the last update time of the model.
+
+`Constructor (__init__) Method`:
+
+The constructor initializes the object with either default values or values provided as arguments or keyword arguments.
+
+It sets the `id` to a new UUID if not provided. If provided, it converts the `created_at` and `updated_at` timestamps from strings to `datetime` objects.
+
+If `created_at` or `updated_at` is not provided, it sets them to the current UTC time.
+
+`__str__ Method`:
+
+Provides a string representation of the object, displaying the class name, `id` , and the dictionary representation of the object.
+
+`to_dict Method`:
+
+Returns a dictionary representation of the object, including class name, `id`, `created_at`, and `updated_at`. It excludes the `_sa_instance_state` attribute, which is typically used internally by SQLAlchemy.
+
 
 [messages.py](https://github.com/Bradkibs/EMS254/blob/main/models/messages.py)
 
