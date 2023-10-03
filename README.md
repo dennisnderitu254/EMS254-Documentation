@@ -37,36 +37,35 @@ This is an explanation on the backend structure of the Escrow System, EMS254.
 
 #### `@app_views.route('/login', methods=['POST'])`
 
-`login_user()` - handles login requests using either an email address or a phone number as identifiers.
+- `login_user()` - handles login requests using either an email address or a phone number as identifiers.
 
-`Data Extraction`: The function extracts information from the JSON request data, including `email`, `phone_number`, and `password`.
+- `Data Extraction`: The function extracts information from the JSON request data, including `email`, `phone_number`, and `password`.
 
-`Input Validation`: The code performs basic input validation, checking whether either an `email` or a `phone_number` is provided in the request data. If neither is provided or if the `password` is missing, it returns a JSON response with an error message and a 400 HTTP status code.
+- `Input Validation`: The code performs basic input validation, checking whether either an `email` or a `phone_number` is provided in the request data. If neither is provided or if the `password` is missing, it returns a JSON response with an error message and a 400 HTTP status code.
 
-`User Retrieval`: Depending on whether `email` or `phone_number` is provided, it retrieves the user using either `user_auth.get_user_by_email()` or `user_auth.get_user_by_email(phone_number)`.
+- `User Retrieval`: Depending on whether `email` or `phone_number` is provided, it retrieves the user using either `user_auth.get_user_by_email()` or `user_auth.get_user_by_email(phone_number)`.
 
-`User Existence Check`: It checks if a user with the provided identifier (email or phone number) exists. If the user is not found, it returns a JSON response indicating that the user was not found with a 404 HTTP status code.
+- `User Existence Check`: It checks if a user with the provided identifier (email or phone number) exists. If the user is not found, it returns a JSON response indicating that the user was not found with a 404 HTTP status code.
 
+- `Password Verification`: If the user is found, it verifies the provided password using `user_auth.verify_password(password, user.password)`. If the password is incorrect, it returns a JSON response indicating an invalid password with a 400 HTTP status code.
 
-`Password Verification`: If the user is found, it verifies the provided password using `user_auth.verify_password(password, user.password)`. If the password is incorrect, it returns a JSON response indicating an invalid password with a 400 HTTP status code.
+- `Token Creation and Cookie Setting`: If the email or phone number and password are valid, it creates an access token using `user_authenticator.create_token(user.id)`. It then sets the access token as a cookie in the response using `user_authenticator.set_cookie(response, access_token)`.
 
-`Token Creation and Cookie Setting`: If the email or phone number and password are valid, it creates an access token using `user_authenticator.create_token(user.id)`. It then sets the access token as a cookie in the response using `user_authenticator.set_cookie(response, access_token)`.
-
-`Response`: Finally, it returns a JSON response indicating successful login with a 200 HTTP status code.
+- `Response`: Finally, it returns a JSON response indicating successful login with a 200 HTTP status code.
 
 #### `@app_views.route('/profile', methods=['GET'])`
 
-`get_user()` - It uses a JSON Web Token (JWT) for authentication (`@jwt_required()`) and then retrieves user information based on the authenticated user's ID.
+- `get_user()` - It uses a JSON Web Token (JWT) for authentication (`@jwt_required()`) and then retrieves user information based on the authenticated user's ID.
 
-`JWT Authentication`: The function is decorated with `@jwt_required()`, indicating that a valid JWT token is required for access. The `user_id` is extracted from the authenticated token using `user_authenticator.get_authenticated_user()`.
+- `JWT Authentication`: The function is decorated with `@jwt_required()`, indicating that a valid JWT token is required for access. The `user_id` is extracted from the authenticated token using `user_authenticator.get_authenticated_user()`.
 
-`User Existence Check`: It checks if a user with the specified ID exists. If the user is not found, it returns a JSON response indicating that the user was not found with a 404 HTTP status code.
+- `User Existence Check`: It checks if a user with the specified ID exists. If the user is not found, it returns a JSON response indicating that the user was not found with a 404 HTTP status code.
 
-`Response`: If the user is found, it constructs a dictionary (user_data) containing various user attributes such as email, first name, last name, phone number, location, role, is_active, and last login. It returns this user data as a JSON response with a 200 HTTP status code.
+- `Response`: If the user is found, it constructs a dictionary (user_data) containing various user attributes such as email, first name, last name, phone number, location, role, is_active, and last login. It returns this user data as a JSON response with a 200 HTTP status code.
 
 #### `@app_views.route('/logout', methods=['POST'])`
 
-`logout()` - It handles logout requests by extracting the access token from the 'Authorization' header, checking if the user is authenticated, and then logging them out by removing the access token
+- `logout()` - It handles logout requests by extracting the access token from the 'Authorization' header, checking if the user is authenticated, and then logging them out by removing the access token
 
 
 ## auth
