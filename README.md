@@ -169,51 +169,51 @@ SQLAlchemy model class named `Accounts`. This class represents a table in a rela
 
 `Table Configuration`:
 
-`__tablename__`: Specifies the name of the table in the database. In this case, it's set to 'accounts'.
+- `__tablename__`: Specifies the name of the table in the database. In this case, it's set to 'accounts'.
 
 `Columns`:
 
-`user_id`: A foreign key column that references the 'id' column in the 'users' table. It establishes a relationship with the 'User' model.
-`account_number`: A column representing the account number. It is set to be unique, indicating that each account should have a distinct account number.
-`Total_funds`: A column representing the total funds associated with the account.
-`incomming_funds`: A column representing incoming funds for the account.
-`outgoing_funds`: A column representing outgoing funds for the account.
+- `user_id`: A foreign key column that references the 'id' column in the 'users' table. It establishes a relationship with the 'User' model.
+- `account_number`: A column representing the account number. It is set to be unique, indicating that each account should have a distinct account number.
+- `Total_funds`: A column representing the total funds associated with the account.
+- `incomming_funds`: A column representing incoming funds for the account.
+- `outgoing_funds`: A column representing outgoing funds for the account.
 
 `Relationship`:
 
-The `user` attribute establishes a bidirectional relationship between the 'User' and 'Accounts' models. It specifies that there is a relationship between the 'user_id' column in the 'Accounts' table and the 'id' column in the 'users' table. The relationship function is used to define this relationship.
+- The `user` attribute establishes a bidirectional relationship between the 'User' and 'Accounts' models. It specifies that there is a relationship between the 'user_id' column in the 'Accounts' table and the 'id' column in the 'users' table. The relationship function is used to define this relationship.
 
 `Constructor`:
 
-`__init__`: The constructor initializes the object, and it calls the constructor of the superclass `(super().__init__)` with any passed arguments and keyword arguments.
+- `__init__`: The constructor initializes the object, and it calls the constructor of the superclass `(super().__init__)` with any passed arguments and keyword arguments.
 
 [basemodel.py](https://github.com/Bradkibs/EMS254/blob/main/models/basemodel.py)
 
 `BaseModel`
 
-Model to be used as a base class for other models in an ORM-based system.
+- Model to be used as a base class for other models in an ORM-based system.
 
 `Attributes`:
 
-`id`: A unique identifier for the model, typically a UUID stored as a string.
-`created_at`: A timestamp indicating the creation time of the model.
-`updated_at`: A timestamp indicating the last update time of the model.
+- `id`: A unique identifier for the model, typically a UUID stored as a string.
+- `created_at`: A timestamp indicating the creation time of the model.
+- `updated_at`: A timestamp indicating the last update time of the model.
 
 `Constructor (__init__) Method`:
 
-The constructor initializes the object with either default values or values provided as arguments or keyword arguments.
+- The constructor initializes the object with either default values or values provided as arguments or keyword arguments.
 
-It sets the `id` to a new UUID if not provided. If provided, it converts the `created_at` and `updated_at` timestamps from strings to `datetime` objects.
+- It sets the `id` to a new UUID if not provided. If provided, it converts the `created_at` and `updated_at` timestamps from strings to `datetime` objects.
 
-If `created_at` or `updated_at` is not provided, it sets them to the current UTC time.
+- If `created_at` or `updated_at` is not provided, it sets them to the current UTC time.
 
 `__str__ Method`:
 
-Provides a string representation of the object, displaying the class name, `id` , and the dictionary representation of the object.
+- Provides a string representation of the object, displaying the class name, `id` , and the dictionary representation of the object.
 
 `to_dict Method`:
 
-Returns a dictionary representation of the object, including class name, `id`, `created_at`, and `updated_at`. It excludes the `_sa_instance_state` attribute, which is typically used internally by SQLAlchemy.
+- Returns a dictionary representation of the object, including class name, `id`, `created_at`, and `updated_at`. It excludes the `_sa_instance_state` attribute, which is typically used internally by SQLAlchemy.
 
 
 [messages.py](https://github.com/Bradkibs/EMS254/blob/main/models/messages.py)
@@ -222,23 +222,23 @@ Returns a dictionary representation of the object, including class name, `id`, `
 
 `Class Definition`:
 
-The class inherits from both `BaseModel` and `Base`, indicating that it is an SQLAlchemy model and presumably extends some common functionality from the `BaseModel` class.
+- The class inherits from both `BaseModel` and `Base`, indicating that it is an SQLAlchemy model and presumably extends some common functionality from the `BaseModel` class.
 
-The `__tablename__` attribute specifies the name of the table in the database. In this case, it's set to 'messages'.
+- The `__tablename__` attribute specifies the name of the table in the database. In this case, it's set to 'messages'.
 
 `Attributes`:
 
-`content`: A column representing the content of the message. It is of type Text and cannot be null.
+- `content`: A column representing the content of the message. It is of type Text and cannot be null.
 
-`sender_id` and `receiver_id`: Columns representing foreign keys referencing the 'id' column in the 'users' table. These columns establish relationships with the 'User' model.
+- `sender_id` and `receiver_id`: Columns representing foreign keys referencing the 'id' column in the 'users' table. These columns establish relationships with the 'User' model.
 
 `Relationships`:
 
-`sender` and `receiver`: These are relationship attributes that define the sender and receiver relationships with the 'User' model. They use the relationship function from SQLAlchemy.
+- `sender` and `receiver`: These are relationship attributes that define the sender and receiver relationships with the 'User' model. They use the relationship function from SQLAlchemy.
 
-`foreign_keys` parameter is used to specify which columns are used as foreign keys for the relationships.
+- `foreign_keys` parameter is used to specify which columns are used as foreign keys for the relationships.
 
-The `back_populates` parameter specifies the attribute on the 'User' model that represents the reverse relationship. It indicates that 'User' instances will have attributes named 'sent_messages' and 'received_messages' to access their respective messages.
+- The `back_populates` parameter specifies the attribute on the 'User' model that represents the reverse relationship. It indicates that 'User' instances will have attributes named 'sent_messages' and 'received_messages' to access their respective messages.
 
 
 [transactions.py](https://github.com/Bradkibs/EMS254/blob/main/models/transactions.py)
