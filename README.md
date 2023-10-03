@@ -322,20 +322,6 @@ SQLAlchemy model class named `Accounts`. This class represents a table in a rela
 
 - `get_all_users`: This method retrieves all users from the database using the `User` SQLAlchemy model.
 
-`Considerations`:
-
-- The use of class attributes like `db` is common when you want to create an instance of another class that will be used throughout the class methods.
-
-- The code assumes that there is a `query` method in the `__db` (should be `db`) instance, which allows for database queries.
-
-- The provided code does not include the definition of the `DB` class, so it's assumed that this class provides necessary methods for interacting with the database.
-
-- The methods provide a straightforward way to retrieve all transactions, accounts, and users. Depending on the application's scale, efficiency concerns might arise when fetching all records at once.
-
-- Ensuring that the `DB` class is properly defined and configured, and it provides the necessary methods for querying the database.
-
-- In the `__db` (should be `db`) attribute access correction, I've used `self.db` to maintain consistency with the attribute name used when creating an instance of the `DB` class.
-
 
 [GetRelationships.py](https://github.com/Bradkibs/EMS254/blob/main/utils/GetRelationships.py)
 
@@ -357,18 +343,6 @@ SQLAlchemy model class named `Accounts`. This class represents a table in a rela
 
 - `get_user_from_account_number(account_number)`: This method retrieves a user associated with a given account number from the Accounts table. It assumes that there is an attribute named user in the Accounts model.
 
-
-`Considerations`:
-
-- The use of class attributes like `__db` is common when you want to create an instance of another class that will be used throughout the class methods.
-
-- The code assumes that there are specific attributes (`user`, `accounts`, `sender`) in the respective models (`Accounts`, `User`, `Transactions`) that establish relationships between the tables.
-
-- The provided code does not include the definition of the `DB` class, so it's assumed that this class provides necessary methods for interacting with the database.
-
-- Ensure that the relationships between tables in the database are properly defined in the corresponding SQLAlchemy models.
-
-- These methods provide a way to navigate relationships between entities in the database. It's useful for scenarios where you want to find related information based on IDs or other criteria.
 
 [TransactionServices.py](https://github.com/Bradkibs/EMS254/blob/main/utils/TransactionServices.py)
 
