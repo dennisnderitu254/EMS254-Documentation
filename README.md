@@ -306,13 +306,43 @@ SQLAlchemy model class named `Accounts`. This class represents a table in a rela
 
 [Admin.py](https://github.com/Bradkibs/EMS254/blob/main/utils/Admin.py)
 
+`Admin`
+
+- This is utility / service class for administrative purposes in a system.
+
+`Class Attributes`:
+
+- `db`: This is a class attribute that represents an instance of the `DB` class. It is created when an instance of the `Admin` class is created.
+
+`Methods`:
+
+- `get_all_transactions`: This method retrieves all transactions from the database. It assumes that there is a `__db` attribute (which appears to be a typo and should be `db`) that is an instance of a class providing a method called `query` for querying the database. The `Transactions` class is the SQLAlchemy model for transactions, and `.all()` is used to fetch all records.
+
+- `get_all_accounts`: Similar to `get_all_transactions`, this method retrieves all accounts from the database using the `Accounts` SQLAlchemy model.
+
+- `get_all_users`: This method retrieves all users from the database using the `User` SQLAlchemy model.
+
+`Considerations`:
+
+- The use of class attributes like `db` is common when you want to create an instance of another class that will be used throughout the class methods.
+
+- The code assumes that there is a `query` method in the `__db` (should be `db`) instance, which allows for database queries.
+
+- The provided code does not include the definition of the `DB` class, so it's assumed that this class provides necessary methods for interacting with the database.
+
+- The methods provide a straightforward way to retrieve all transactions, accounts, and users. Depending on the application's scale, efficiency concerns might arise when fetching all records at once.
+
+- Ensuring that the `DB` class is properly defined and configured, and it provides the necessary methods for querying the database.
+
+- In the `__db` (should be `db`) attribute access correction, I've used `self.db` to maintain consistency with the attribute name used when creating an instance of the `DB` class.
+
+
 [GetRelationships.py](https://github.com/Bradkibs/EMS254/blob/main/utils/GetRelationships.py)
 
 [TransactionServices.py](https://github.com/Bradkibs/EMS254/blob/main/utils/TransactionServices.py)
 
 
 [messages.py](https://github.com/Bradkibs/EMS254/blob/main/utils/messages.py)
-
 
 `MessagesService` class: This class contains methods for managing messages.
 
