@@ -159,6 +159,26 @@ storage.reload()
 
 [storage.py](https://github.com/Bradkibs/EMS254/blob/main/db/storage.py)
 
+`class DB:`
+
+- `class DB:` - Class that handles database connections and operations using SQLAlchemy in a Python application.
+
+`Class Attributes`:
+
+- `__engine`: This attribute represents an instance of the SQLAlchemy `create_engine` class, which is used for managing database connections. It is initialized in the class constructor.
+
+- `__session`: This attribute represents a session object from SQLAlchemy's scoped_session. It is used for managing a unit of work and persists changes to the database.
+
+
+`Constructor (__init__)`:
+
+- Initializes the `DB` class. It takes values for PostgreSQL connection parameters (user, password, host, database name) from environment variables. It also checks the environment (`APP_ENV`) to determine if it's in a testing environment, in which case it drops all tables.
+
+- Creates an instance of the SQLAlchemy `create_engine` class based on the provided connection parameters.
+
+- Calls the `reload` method to create tables and initialize the session.
+
+- If any errors occur during initialization, it raises a `SQLAlchemyError`.
 
 ## models
 
