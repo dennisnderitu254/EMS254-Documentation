@@ -69,7 +69,7 @@ The response includes the user ID, a success message, and details about the crea
 `logout()` - It handles logout requests by extracting the access token from the 'Authorization' header, checking if the user is authenticated, and then logging them out by removing the access token
 
 
-### auth
+## auth
 
 `Authentication` is Done using JWT(JSON Web Token) - JWT stands for JSON Web Token. It is a compact,
 URL-safe means of representing claims to be transferred between two parties.
@@ -147,7 +147,7 @@ The email body also includes a message instructing the recipient to click the ve
 
 The function attempts to send the email using `mail.send(msg)`. If the email is sent successfully, it returns a JSON response with a success message and status code 200. If there's an exception during the email sending process, it returns a JSON response with an error message and status code 502.
 
-### db
+## db
 
 [__init__.py](https://github.com/Bradkibs/EMS254/blob/main/db/__init__.py)
 
