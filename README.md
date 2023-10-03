@@ -100,7 +100,9 @@ enabling the claims to be digitally signed or integrity protected with a Message
 
 #### `class UserAuth:`
 
-`UserAuth` - It includes methods for hashing and verifying passwords, creating users, and interacting with user data in a database.
+`UserAuth`
+
+It includes methods for hashing and verifying passwords, creating users, and interacting with user data in a database.
 
 `Database Initialization`: The class has a class-level attribute `_db` that represents a database connection, and it's initialized and reloaded during the class creation.
 
@@ -125,7 +127,25 @@ enabling the claims to be digitally signed or integrity protected with a Message
 
 [verify_user.py](https://github.com/Bradkibs/EMS254/blob/main/auth/verify_user.py)
 
+`generate_verification_token() Function`:
 
+This function generates a URL-safe verification token using the `secrets` module. The `token_urlsafe` method generates a random URL-safe text with the specified number of bytes (16 bytes in this case).
+
+The generated token is intended to be used as part of a verification URL sent to users for email confirmation.
+
+`send_verification_email(user_email, verification_token) Function`:
+
+This function sends a verification email to the specified `user_email` with a verification token.
+
+It uses the `Mail` and `Message` classes from an email library (possibly Flask-Mail) to create and send an email.
+
+The subject of the email is set to 'Verification Email for EMS254', and the sender is retrieved from the environment variable `VERIFICATION_EMAIL`.
+
+The email body includes a verification URL constructed using `url_for`. The `url_for` function generates a fully qualified URL for a given endpoint (in this case, 'app_views.register') with the verification token as a parameter. The`_external=True` argument ensures that an absolute URL is generated.
+
+The email body also includes a message instructing the recipient to click the verification link to confirm their email address for EMS254. It also provides information on what to do if they didn't register for EMS254.
+
+The function attempts to send the email using `mail.send(msg)`. If the email is sent successfully, it returns a JSON response with a success message and status code 200. If there's an exception during the email sending process, it returns a JSON response with an error message and status code 502.
 
 ### db
 
