@@ -11,8 +11,35 @@ This is an explanation on the backend structure of the Escrow System, EMS254.
 
 [user_views.py](https://github.com/Bradkibs/EMS254/blob/main/api/v1/views/user/users_views.py)
 
+`@app_views.route('/register', methods=['POST'])`
 
-#### auth
+`Input Data Validation:`
+
+The function retrieves user registration data from the JSON payload of an HTTP request using `request.get_json()`.
+
+It checks if the required fields (`email`, `password`, `first_name`, `last_name`, `phone_number`, `location`) are present in the data. If any of them is missing, it returns a JSON response with a 400 status code and an appropriate error message.
+
+`User Registration:`
+
+It checks if a user with the provided email already exists. If so, it returns a JSON response with a 409 status code and a message indicating that the user already exists.
+
+If the user does not exist, it proceeds to create a new user using `user_auth.create_user()` with the provided registration data.
+
+`Account Creation:`
+
+After creating the user, it calls `account_service.create_account()` to create a corresponding account for the user. The account is initialized with zero funds (`Total_funds`, `incomming_funds`, `outgoing_funds`), and the `user_id` is set to the ID of the newly created user.
+
+`Response:`
+
+It constructs a JSON response with a 201 status code (indicating successful creation) and includes information about the user and the created account.
+
+The response includes the user ID, a success message, and details about the created account.
+
+
+`@app_views.route('/login', methods=['POST'])`
+
+
+### auth
 
 [auth.py](https://github.com/Bradkibs/EMS254/blob/main/auth/auth.py) - This file enables the use of JWT Authentication,  Containing a class that allowed token creation and cookies to be set
 
