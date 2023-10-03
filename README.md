@@ -362,8 +362,6 @@ SQLAlchemy model class named `Accounts`. This class represents a table in a rela
 
 `view_user_specific_transactions(user_id)`: This method retrieves all transactions where the provided `user_id` matches the `sender_id`. It retrieves a list of transactions from the database.
 
-
-
 [messages.py](https://github.com/Bradkibs/EMS254/blob/main/utils/messages.py)
 
 `MessagesService` class: This class contains methods for managing messages.
