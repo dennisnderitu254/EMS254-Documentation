@@ -161,11 +161,31 @@ storage.reload()
 [storage.py](https://github.com/Bradkibs/EMS254/blob/main/db/storage.py)
 
 
-### models
+## models
 
 [accounts.py](https://github.com/Bradkibs/EMS254/blob/main/models/accounts.py)
 
+SQLAlchemy model class named `Accounts`. This class represents a table in a relational database and is likely part of an ORM (Object-Relational Mapping) system.
 
+`Table Configuration`:
+
+`__tablename__`: Specifies the name of the table in the database. In this case, it's set to 'accounts'.
+
+`Columns`:
+
+`user_id`: A foreign key column that references the 'id' column in the 'users' table. It establishes a relationship with the 'User' model.
+`account_number`: A column representing the account number. It is set to be unique, indicating that each account should have a distinct account number.
+`Total_funds`: A column representing the total funds associated with the account.
+`incomming_funds`: A column representing incoming funds for the account.
+`outgoing_funds`: A column representing outgoing funds for the account.
+
+`Relationship`:
+
+The `user` attribute establishes a bidirectional relationship between the 'User' and 'Accounts' models. It specifies that there is a relationship between the 'user_id' column in the 'Accounts' table and the 'id' column in the 'users' table. The relationship function is used to define this relationship.
+
+`Constructor`:
+
+`__init__`: The constructor initializes the object, and it calls the constructor of the superclass `(super().__init__)` with any passed arguments and keyword arguments.
 
 [basemodel.py](https://github.com/Bradkibs/EMS254/blob/main/models/basemodel.py)
 
