@@ -339,6 +339,37 @@ SQLAlchemy model class named `Accounts`. This class represents a table in a rela
 
 [GetRelationships.py](https://github.com/Bradkibs/EMS254/blob/main/utils/GetRelationships.py)
 
+`class GetRelationships:`
+
+`GetRelationships`- Class that is responsible for retrieving related information from different tables in a database.
+
+`Class Attributes`:
+
+- `__db`: This is a class attribute that represents an instance of the `DB` class. It is created when an instance of the `GetRelationships` class is created.
+
+`Methods`:
+
+- `get_user_from_accounts(account_id)`: This method retrieves a user associated with a given account ID from the Accounts table. It assumes that there is an attribute named user in the Accounts model.
+
+- `get_account_from_user(user_id)`: This method retrieves an account associated with a given user ID from the User table. It assumes that there is an attribute named accounts in the User model.
+
+- `get_user_from_transactions(transaction_id)`: This method retrieves a user associated with a given transaction ID from the Transactions table. It assumes that there is an attribute named sender in the Transactions model.
+
+- `get_user_from_account_number(account_number)`: This method retrieves a user associated with a given account number from the Accounts table. It assumes that there is an attribute named user in the Accounts model.
+
+
+`Considerations`:
+
+- The use of class attributes like `__db` is common when you want to create an instance of another class that will be used throughout the class methods.
+
+- The code assumes that there are specific attributes (`user`, `accounts`, `sender`) in the respective models (`Accounts`, `User`, `Transactions`) that establish relationships between the tables.
+
+- The provided code does not include the definition of the `DB` class, so it's assumed that this class provides necessary methods for interacting with the database.
+
+- Ensure that the relationships between tables in the database are properly defined in the corresponding SQLAlchemy models.
+
+- These methods provide a way to navigate relationships between entities in the database. It's useful for scenarios where you want to find related information based on IDs or other criteria.
+
 [TransactionServices.py](https://github.com/Bradkibs/EMS254/blob/main/utils/TransactionServices.py)
 
 
