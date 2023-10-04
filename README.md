@@ -9,6 +9,8 @@ This is an explanation on the backend structure of the Escrow System, EMS254.
 
 `EMS254/tree/main/api/v1/views/user` - This is an path that has the routes/endpoints that are handling Registration, Login, User Profile, Logout
 
+`/EMS254/blob/main/api/v1/views/transactions/` - This is a  Path that has the routes/endpoints that handle transactions
+
 [user_views.py](https://github.com/Bradkibs/EMS254/blob/main/api/v1/views/user/users_views.py)
 
 #### `@app_views.route('/register', methods=['POST'])`
@@ -67,6 +69,25 @@ This is an explanation on the backend structure of the Escrow System, EMS254.
 
 - `logout()` - It handles logout requests by extracting the access token from the 'Authorization' header, checking if the user is authenticated, and then logging them out by removing the access token
 
+### `transactions`
+
+`/EMS254/blob/main/api/v1/views/transactions/` - This is a  Path that has the routes/endpoints that handle transactions
+
+[transact_view.py](https://github.com/Bradkibs/EMS254/blob/main/api/v1/views/transactions/transact_view.py)
+
+#### `@user_trans.route('/transact', methods=['POST'])`
+
+#### `@user_trans.route('/transactions', methods=['GET'])`
+
+#### `@user_trans.route('/transaction/<int:transaction_id>', methods=['GET'])`
+
+#### `@user_trans.route('/approve/<String:transaction_id>', methods=['PATCH'])`
+
+#### `@user_trans.route('/cancel/<String:transaction_id>', methods=['PATCH'])`
+
+#### `@user_trans.route('/deposit')`
+
+#### `@user_trans.route('/withdraw')`
 
 ## `auth`
 
