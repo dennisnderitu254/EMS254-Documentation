@@ -119,6 +119,7 @@ Logic Summary
 * Returns:
     - A list of transaction objects.
 
+Function - `get_all_transactions()` Logic
 1. Get the authenticated user's ID.
 2. Get all of the user's transactions.
 3. Return the transactions.
