@@ -176,7 +176,7 @@ Function - `def approve_transaction(transaction_id):` Logic
 
 1. Get the transaction by its ID.
 2. Check if the transaction is found.
- * Return an error message if the transaction is not found.
+    * Return an error message if the transaction is not found.
 3. Check if the transaction is pending.
     * Return an error message if the transaction is not pending.
 4. Get the user details from the transaction ID.
