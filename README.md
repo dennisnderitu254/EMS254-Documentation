@@ -77,6 +77,32 @@ This is an explanation on the backend structure of the Escrow System, EMS254.
 
 #### `@user_trans.route('/transact', methods=['POST'])`
 
+Function - `def create_transaction():`
+
+- Creates a new transaction in the database.
+- Requires a JWT token to be passed in the Authorization header.
+- Returns:
+    - A JSON object containing a message and a transaction object.
+
+The function first checks to make sure that all of the required parameters are provided. If any of the parameters are missing, the function returns an error message and a status code of 400 (Bad Request).
+
+Next, the function retrieves the user ID of the receiver from the account number. If the receiver ID cannot be found, the function returns an error message and a status code of 400 (Bad Request).
+
+The function then checks to make sure that the sender and receiver are not the same person. If they are, the function returns an error message and a status code of 400 (Bad Request).
+
+Finally, the function calls the account_service.transact() method to transfer the money from the sender's account to the receiver's account. If the transaction is successful, the function creates a new transaction object in the database and returns it.
+
+Logic Summary
+1. Get the authenticated user's ID.
+2. Get the account number and amount from the request body.
+3. Check if the account number and amount are provided.
+4. Get the receiver's ID.
+5. Check if the receiver's ID is found.
+6. Check if the sender's ID is the same as the receiver's ID.
+7. Transfer the amount from the sender's account to the receiver's account.
+8. Create a new transaction object.
+9. Return a JSON object containing a message and the transaction object.
+
 #### `@user_trans.route('/transactions', methods=['GET'])`
 
 #### `@user_trans.route('/transaction/<int:transaction_id>', methods=['GET'])`
