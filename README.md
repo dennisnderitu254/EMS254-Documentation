@@ -68,7 +68,7 @@ This is an explanation on the backend structure of the Escrow System, EMS254.
 - `logout()` - It handles logout requests by extracting the access token from the 'Authorization' header, checking if the user is authenticated, and then logging them out by removing the access token
 
 
-## auth
+## `auth`
 
 `Authentication` is Done using JWT(JSON Web Token) - JWT stands for JSON Web Token. It is a compact,
 URL-safe means of representing claims to be transferred between two parties.
@@ -146,7 +146,7 @@ enabling the claims to be digitally signed or integrity protected with a Message
 
 - The function attempts to send the email using `mail.send(msg)`. If the email is sent successfully, it returns a JSON response with a success message and status code 200. If there's an exception during the email sending process, it returns a JSON response with an error message and status code 502.
 
-## db
+## `db`
 
 [__init__.py](https://github.com/Bradkibs/EMS254/blob/main/db/__init__.py)
 
@@ -180,7 +180,7 @@ storage.reload()
 
 - If any errors occur during initialization, it raises a `SQLAlchemyError`.
 
-## models
+## `models`
 
 [accounts.py](https://github.com/Bradkibs/EMS254/blob/main/models/accounts.py)
 
@@ -321,7 +321,7 @@ SQLAlchemy model class named `Accounts`. This class represents a table in a rela
 - The constructor initializes the object by calling the constructor of the superclass (`super().__init__`) with any passed arguments and keyword arguments.
 
 
-### Utils
+### `Utils`
 
 [Admin.py](https://github.com/Bradkibs/EMS254/blob/main/utils/Admin.py)
 
@@ -435,7 +435,7 @@ If it does, a new account number is generated. The method then creates an `Accou
 
 - `transact(self, amount, sender_id, receiver_id):` This method performs a transaction by subtracting the specified amount from the sender's account and adding it to the receiver's account. It also includes error checking, such as ensuring the amount is greater than 100, checking for sender and receiver IDs, verifying sufficient funds, and handling transactions using SQL transactions (`_db.begin()`, `_db.rollback()`, and `_db.save()`).
 
-### App
+### `App`
 
 [app.py](https://github.com/Bradkibs/EMS254/blob/main/app.py)
 
