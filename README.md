@@ -105,6 +105,24 @@ Logic Summary
 
 #### `@user_trans.route('/transactions', methods=['GET'])`
 
+Function - `get_all_transactions()`
+- This function gets all of the transactions for the authenticated user. It takes no parameters and returns a list of transaction objects.
+
+The function first gets the authenticated user's ID by calling the `user_authenticator.get_authenticated_user()` method. If the user is not authenticated, the function returns `None`.
+
+Next, the function calls the `transaction_service.get_all_transactions()` method to get all of the transactions for the authenticated user. This method takes the user's ID as a parameter and returns a list of transaction objects.
+
+Logic Summary
+
+* Gets all of the transactions for the authenticated user.
+* Requires a JWT token to be passed in the Authorization header.
+* Returns:
+    - A list of transaction objects.
+
+1. Get the authenticated user's ID.
+2. Get all of the user's transactions.
+3. Return the transactions.
+
 #### `@user_trans.route('/transaction/<int:transaction_id>', methods=['GET'])`
 
 #### `@user_trans.route('/approve/<String:transaction_id>', methods=['PATCH'])`
