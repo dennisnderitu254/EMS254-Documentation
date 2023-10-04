@@ -1,5 +1,7 @@
 # EMS254 Documentation
 
+## This is the Main Project Repository [EMS254](https://github.com/Bradkibs/EMS254)
+
 EMS254 is a mode of payment system that enables Third Party Payments using the Escrow Model and Technology.
 
 This is an explanation on the backend structure of the Escrow System, EMS254.
