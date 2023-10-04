@@ -151,6 +151,41 @@ Function - `def get_transaction(transaction_id):` Logic
 
 #### `@user_trans.route('/approve/<String:transaction_id>', methods=['PATCH'])`
 
+Function - `def approve_transaction(transaction_id):`
+
+This function approves a transaction by its ID. It takes the transaction ID as a parameter and returns a JSON object containing a success message if the transaction is approved, or a JSON object containing an error message if the transaction is not found or is not in a pending state.
+
+The function first calls the `transaction_service.get_transaction()` method to get the transaction by its ID. This method takes the transaction ID as a parameter and returns a transaction object if the transaction is found, or `None` if the transaction is not found.
+
+If the transaction is not found, the function returns a JSON object containing the error message "transaction not found" and a status code of 404 (Not Found).
+
+Otherwise, the function checks if the transaction is in a pending state. If it is not, the function returns a JSON object containing the error message "transaction is not pending" and a status code of 400 (Bad Request).
+
+If the transaction is in a pending state, the function calls the `account_service.send_money()` method to transfer the money from the sender's account to the receiver's account. This method takes the amount to transfer, the sender's ID, and the receiver's ID as parameters.
+
+If the money transfer is successful, the function calls the `transaction_service.approve_transaction()` method to approve the transaction. This method takes the transaction ID as a parameter.
+
+Finally, the function returns a JSON object containing the success message "transaction approved" and a status code of 200 (OK).
+
+Function - `def approve_transaction(transaction_id):` Logic
+
+* Approves a transaction by its ID.
+* Requires a JWT token to be passed in the Authorization header.
+* Returns:
+    * A JSON object containing a message, or a JSON object containing an error message.
+
+1. Get the transaction by its ID.
+2. Check if the transaction is found.
+ * Return an error message if the transaction is not found.
+3. Check if the transaction is pending.
+    * Return an error message if the transaction is not pending.
+4. Get the user details from the transaction ID.
+5. Transfer the money from the sender's account to the receiver's account.
+6. Approve the transaction.
+7. Return a success message.
+
+
+
 #### `@user_trans.route('/cancel/<String:transaction_id>', methods=['PATCH'])`
 
 #### `@user_trans.route('/deposit')`
