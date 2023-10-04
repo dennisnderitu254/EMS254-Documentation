@@ -126,6 +126,29 @@ Function - `get_all_transactions()` Logic
 
 #### `@user_trans.route('/transaction/<int:transaction_id>', methods=['GET'])`
 
+Function - `def get_transaction(transaction_id):`
+
+This function gets a transaction by its ID. It takes the transaction ID as a parameter and returns a JSON object containing a message and the transaction object, or a JSON object containing an error message if the transaction is not found.
+
+The function first calls the `transaction_service.get_transaction()` method to get the transaction by its ID. This method takes the transaction ID as a parameter and returns a transaction object if the transaction is found, or `None` if the transaction is not found.
+
+If the transaction is not found, the function returns a JSON object containing the error message "transaction not found" and a status code of 404 (Not Found).
+
+Otherwise, the function returns a JSON object containing the message "transaction found" and the transaction object, serialized using the `transaction.serialize()` method. The status code of the response is 200 (OK).
+
+Function - `def get_transaction(transaction_id):` Logic
+
+* Gets a transaction by its ID.
+* Requires a JWT token to be passed in the Authorization header.
+* Returns:
+    * A JSON object containing a message and a transaction object,
+    * or a, JSON object containing an error message.
+
+1. Get the transaction by its ID.
+2. Check if the transaction is found.
+    * Return an error message if the transaction is not found.
+3. Return the transaction object if it is found.
+
 #### `@user_trans.route('/approve/<String:transaction_id>', methods=['PATCH'])`
 
 #### `@user_trans.route('/cancel/<String:transaction_id>', methods=['PATCH'])`
